@@ -38,10 +38,3 @@ Unlike traditional calculators that force you to re-enter data and lose your pro
 * **Deployment:** Vercel
 
 ---
-
-## **Getting Started (Local Development)**
-
-1. **Clone the repository:**
-   ```bash
-   git clone [https://github.com/greg-motion-dev/interest-ing.git](https://github.com/greg-motion-dev/interest-ing.git)
-   cd interest-ing
