@@ -6,7 +6,7 @@
 ---
 
 ## **About the Project**
-**Interest.ing** is a high-end, user-centric financial planning web application built as a Capstone project for the SPICED Academy web development bootcamp. It bridges the gap between cold, intimidating financial tables and modern, accessible UI/UX design (featuring a sleek "Queen of Curves" aesthetic). 
+**Interest.ing** is a high-end, user-centric financial planning web application built as a Capstone project for the SPICED Academy web development bootcamp. It bridges the gap between cold, intimidating financial tables and modern, accessible UI/UX design (featuring a sleek aesthetic). 
 
 Unlike traditional calculators that force you to re-enter data and lose your progress on refresh, Interest.ing offers persistent scenario management, a unified global state, and real-time visual feedback via fluid charting.
 
@@ -31,7 +31,7 @@ Unlike traditional calculators that force you to re-enter data and lose your pro
 
 ## **Tech Stack**
 * **Framework:** Next.js (App Router)
-* **Styling & UI:** Tailwind CSS, Framer Motion (for smooth "Queen of Curves" transitions)
+* **Styling & UI:** Tailwind CSS, Framer Motion (for smooth transitions)
 * **State Management:** Zustand
 * **Database & ORM:** MongoDB Atlas & Mongoose
 * **Data Visualization:** Recharts
