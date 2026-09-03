@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #f2f2f2;
   --foreground: #171717;
 }
 
@@ -10,6 +10,16 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /*--- MAIN COLORS ---*/
+  --color-primary-500: oklch(48.24% 0.07965 204.203);
+  --color-secondary-500: oklch(66.268% 0.18774 29.105);
+  --color-accent-500: oklch(89.842% 0.18554 103.864);
+
+  /*--- Curvy Radius ---*/
+  --radius-4xl: 2rem;
+  --radius-5xl: 3rem;
+  --radius-6xl: 4rem;
 }
 
 @media (prefers-color-scheme: dark) {
