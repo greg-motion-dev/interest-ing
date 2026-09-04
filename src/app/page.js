@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import { motion } from "motion/react";
+import useCalculatorStore from "@/store/useCalculatorStore";
 
 export default function Home() {
   return (
@@ -14,6 +15,9 @@ export default function Home() {
           height={20}
           priority
         />
+
+        <TestComponent />
+
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -89,3 +93,23 @@ export default function Home() {
     </div>
   );
 }
+
+/*---TESTING CALCULATION---*/
+
+export function TestComponent() {
+  const startCapital = useCalculatorStore((state) => state.startCapital);
+  const setStartCapital = useCalculatorStore((state) => state.setStartCapital);
+
+  return (
+    <div className="p-6">
+      <p> Current Startcapital: {startCapital}</p>
+      <button
+        onClick={() => setStartCapital(startCapital + 500)}
+        className="bg-[var(--color-primary-500)] text-white px-4 py-2 rounded"
+      >
+        add +500 EUR
+      </button>
+    </div>
+  );
+}
+/*---TESTING CALCULATION---*/
