@@ -18,7 +18,7 @@ export default function PageCompound() {
   );
 
   return (
-    <div className="fw-full flex flex-col lg:flex-row gap-8 p-6">
+    <div className="w-full flex flex-col lg:flex-row gap-8 p-6">
       {/* left inputs */}
       <div className="w-full lg:w-1/3 bg-zinc-900 p-6 rounded-2xl">
         <MasterInputForm />
