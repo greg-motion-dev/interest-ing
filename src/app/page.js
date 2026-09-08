@@ -2,19 +2,22 @@
 import Image from "next/image";
 import { motion } from "motion/react";
 import { TestComponent } from "./TestComponent";
+import CalculatorLayout from "@/components/CalculatorLayout";
 
 export default function Home() {
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-red font-sans">
       <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
+        {/* <Image
           className="dark:invert h-5 w-[100px]"
           src="/next.svg"
           alt="Next.js logo"
           width={100}
           height={20}
           priority
-        />
+        /> */}
+
+        <CalculatorLayout />
 
         <TestComponent />
 
