@@ -45,8 +45,8 @@ export default function PageCompound() {
         <div className="bg-zinc-900 p-6 rounded-2xl h-[400px]">
           <ChartCompound data={result.yearlyData} />
         </div>
+        <ScenarioList />
       </div>
-      <ScenarioList />
     </div>
   );
 }

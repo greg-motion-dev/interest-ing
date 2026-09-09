@@ -27,7 +27,7 @@ export async function GET(request) {
     const scenario = await Scenario.find({});
     return NextResponse.json(scenario, { status: 200 });
   } catch (error) {
-    console.error("Failed to create scenario:", error);
+    console.error("Failed to fetch scenario:", error);
     return NextResponse.json(
       {
         status: "Invalid data of scenario",

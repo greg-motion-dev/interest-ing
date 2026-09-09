@@ -1,5 +1,4 @@
 import useSWR from "swr";
-import { mutate } from "swr";
 import ScenarioCard from "./ScenarioCard";
 
 const fetcher = (url) => fetch(url).then((response) => response.json());
