@@ -2,13 +2,13 @@ import useCalculatorStore from "@/store/useCalculatorStore";
 import calculateCompoundInterest from "@/lib/calculations";
 import MasterInputForm from "./MasterInputForm";
 import ChartCompound from "./ChartCompound";
+import ScenarioList from "./ScenarioList";
 
 export default function PageCompound() {
   const startCapital = useCalculatorStore((state) => state.startCapital);
   const monthlyRate = useCalculatorStore((state) => state.monthlyRate);
   const duration = useCalculatorStore((state) => state.duration);
   const interestRate = useCalculatorStore((state) => state.interestRate);
-  const setStartCapital = useCalculatorStore((state) => state.setStartCapital);
 
   const result = calculateCompoundInterest(
     startCapital,
@@ -16,6 +16,12 @@ export default function PageCompound() {
     duration,
     interestRate,
   );
+
+  const currencyFormatter = new Intl.NumberFormat("de-DE", {
+    style: "currency",
+    currency: "EUR",
+    maximumFractionDigits: 0,
+  });
 
   return (
     <div className="w-full flex flex-col lg:flex-row gap-8 p-6">
@@ -30,7 +36,7 @@ export default function PageCompound() {
           <div>
             <p className="text-zinc-400 text-sm">Final Capital</p>
             <p className="text-3xl font-bold text-white">
-              € {result.finalCapital.toFixed(0)}
+              {currencyFormatter.format(result.finalCapital)}
             </p>
           </div>
         </div>
@@ -40,6 +46,7 @@ export default function PageCompound() {
           <ChartCompound data={result.yearlyData} />
         </div>
       </div>
+      <ScenarioList />
     </div>
   );
 }

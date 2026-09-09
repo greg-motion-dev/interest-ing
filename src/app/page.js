@@ -4,6 +4,7 @@ import { motion } from "motion/react";
 import { TestComponent } from "./TestComponent";
 import CalculatorLayout from "@/components/CalculatorLayout";
 import PageCompound from "@/components/PageCompound";
+import ScenarioList from "@/components/ScenarioList";
 
 export default function Home() {
   return (
@@ -17,10 +18,10 @@ export default function Home() {
           height={20}
           priority
         /> */}
-        <PageCompound />
-        {/* <CalculatorLayout /> */}
+
+        <CalculatorLayout />
         {/* <TestComponent /> */}
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="w-50 h-50 bg-[var(--color-primary-500)]"
@@ -38,7 +39,7 @@ export default function Home() {
             scale: 2,
             transition: { duration: 2 },
           }}
-        />
+        /> */}
       </main>
     </div>
   );
