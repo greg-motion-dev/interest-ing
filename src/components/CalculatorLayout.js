@@ -1,7 +1,7 @@
-import MasterInputForm from "./MasterInputForm";
-import RangeSlider from "./RangeSlider";
+import PageCompound from "./PageCompound";
+import ScenarioSaveButton from "./ScenarioSaveButton";
 
-export default function CalculatorLayout({ children }) {
+export default function CalculatorLayout() {
   return (
     <div className="min-h-screen bg-zinc-100 dark:bg-zinc-950 p-4 md:p-8 font-sans">
       {/* remember to add top navigation later here */}
@@ -22,16 +22,11 @@ export default function CalculatorLayout({ children }) {
 
       {/* main grid here */}
       <main className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-8">
-        <section className="w-full lg:w-1/2 lg:sticky lg:top-8 h-fit">
+        <section className="w-full lg:sticky lg:top-8 h-fit">
           <div className="bg-white/70 dark:bg-black/40 backdrop-blur-xl rounded-3xl p-6 shadow-xl border border-white/40 dark:border-white/10">
             <h2 className="text-xl font-semibold mb-6">financial navigator</h2>
-            <MasterInputForm />
-            {/* range sliders and number input will go here soon */}
-          </div>
-        </section>
-        <section className="w-full lg:w-2/3">
-          <div className="ark:bg-zinc-900 rounded-3xl p-6 shadow-sm border border-zinc-200 dark:border-zinc-800 min-h-[500px]">
-            {/* active chart will render here via "children" */}
+            <ScenarioSaveButton />
+            <PageCompound />
           </div>
         </section>
       </main>

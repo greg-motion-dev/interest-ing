@@ -17,8 +17,10 @@ export default function calculateCompoundInterest(
   // monthly interest rate of the annual interest rate
   const monthlyInterestRate = interestRate / 100 / 12;
 
+  const durationInMonths = duration * 12;
+
   //loop through every month to add compound interest
-  for (let month = 1; month <= duration; month++) {
+  for (let month = 1; month <= durationInMonths; month++) {
     currentCapital = currentCapital * (1 + monthlyInterestRate);
     currentCapital += monthlyRate;
     totalPrincipal += monthlyRate;
