@@ -18,7 +18,7 @@ export default function ScenarioList() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       {scenarios.map((scenario) => (
-        <ScenarioCard key={scenario._id} {...scenario} />
+        <ScenarioCard key={scenario._id} scenario={scenario} />
       ))}
     </div>
   );
