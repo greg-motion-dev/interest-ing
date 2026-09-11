@@ -18,6 +18,7 @@ export default function ScenarioCard({ scenario }) {
 
   const [isEditing, setIsEditing] = useState(false);
   const [newTitle, setNewTitle] = useState(title);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const metrics = [
     { label: "Start Capital", value: startCapital, unit: "€" },
@@ -48,6 +49,7 @@ export default function ScenarioCard({ scenario }) {
       return;
     }
 
+    setErrorMessage(null);
     try {
       const response = await fetch(`/api/scenarios/${_id}`, {
         method: "PATCH",
@@ -60,10 +62,12 @@ export default function ScenarioCard({ scenario }) {
         await mutate("/api/scenarios");
         setIsEditing(false);
       } else {
-        console.error("Failed to update");
+        setErrorMessage("Update failed.");
+        setNewTitle(title);
       }
     } catch (error) {
-      console.error("Error updating title:", error);
+      setErrorMessage("Network Error");
+      setNewTitle(title);
     }
   }
 
@@ -105,6 +109,7 @@ export default function ScenarioCard({ scenario }) {
             className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
             onClick={() => setIsEditing(true)}
             type="button"
+            aria-label="edit"
           >
             <Image src={editIcon} alt="edit" width={25} height={25} />
           </button>
@@ -112,6 +117,7 @@ export default function ScenarioCard({ scenario }) {
             className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
             onClick={handleDelete}
             type="button"
+            aria-label="delete"
           >
             <Image src={deleteIcon} alt="Delete" width={25} height={25} />
           </button>
