@@ -1,17 +1,10 @@
 import useCalculatorStore from "@/store/useCalculatorStore";
 import RangeSlider from "./RangeSlider";
+import ScenarioSaveButton from "./ScenarioSaveButton";
 
 export default function MasterInputForm() {
-  const {
-    startCapital,
-    setStartCapital,
-    monthlyRate,
-    setMonthlyRate,
-    duration,
-    setDuration,
-    interestRate,
-    setInterestRate,
-  } = useCalculatorStore();
+  const { startCapital, monthlyRate, duration, interestRate, updateValue } =
+    useCalculatorStore();
 
   const sliders = [
     {
@@ -19,7 +12,7 @@ export default function MasterInputForm() {
       min: 0,
       max: 50000,
       value: startCapital,
-      onChange: setStartCapital,
+      onChange: (val) => updateValue("startCapital", val),
       sliderName: "startCapital",
       unit: "€",
     },
@@ -28,7 +21,7 @@ export default function MasterInputForm() {
       min: 0,
       max: 10000,
       value: monthlyRate,
-      onChange: setMonthlyRate,
+      onChange: (val) => updateValue("monthlyRate", val),
       sliderName: "monthlyRate",
       unit: "€",
     },
@@ -37,7 +30,7 @@ export default function MasterInputForm() {
       min: 0,
       max: 100,
       value: duration,
-      onChange: setDuration,
+      onChange: (val) => updateValue("duration", val),
       sliderName: "duration",
       unit: "Years",
     },
@@ -46,7 +39,7 @@ export default function MasterInputForm() {
       min: 0,
       max: 15,
       value: interestRate,
-      onChange: setInterestRate,
+      onChange: (val) => updateValue("interestRate", val),
       sliderName: "interestRate",
       unit: "%",
     },
@@ -57,6 +50,9 @@ export default function MasterInputForm() {
       {sliders.map((slider) => (
         <RangeSlider key={slider.sliderName} {...slider} />
       ))}
+      <div className="pt-4 border-t border-zinc-800">
+        <ScenarioSaveButton type="compound-interest" />
+      </div>
     </div>
   );
 }

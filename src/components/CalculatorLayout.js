@@ -1,5 +1,4 @@
 import PageCompound from "./PageCompound";
-import ScenarioSaveButton from "./ScenarioSaveButton";
 
 export default function CalculatorLayout() {
   return (
@@ -25,7 +24,6 @@ export default function CalculatorLayout() {
         <section className="w-full lg:sticky lg:top-8 h-fit">
           <div className="bg-white/70 dark:bg-black/40 backdrop-blur-xl rounded-3xl p-6 shadow-xl border border-white/40 dark:border-white/10">
             <h2 className="text-xl font-semibold mb-6">financial navigator</h2>
-            <ScenarioSaveButton />
             <PageCompound />
           </div>
         </section>
