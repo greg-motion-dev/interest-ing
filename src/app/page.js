@@ -1,10 +1,10 @@
 "use client";
-import Image from "next/image";
-import { motion } from "motion/react";
 import { TestComponent } from "./TestComponent";
+import Image from "next/image";
 import CalculatorLayout from "@/components/CalculatorLayout";
 import PageCompound from "@/components/PageCompound";
 import ScenarioList from "@/components/ScenarioList";
+import { useState } from "react";
 
 export default function Home() {
   return (
@@ -21,25 +21,6 @@ export default function Home() {
 
         <CalculatorLayout />
         {/* <TestComponent /> */}
-        {/* <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="w-50 h-50 bg-[var(--color-primary-500)]"
-        />
-        <motion.div
-          className="w-20 h-20 bg-[var(--color-secondary-500)]"
-          animate={{
-            scale: 2,
-            transition: { duration: 2 },
-          }}
-        />
-        <motion.div
-          className="w-20 h-20 bg-[var(--color-accent-500)]"
-          animate={{
-            scale: 2,
-            transition: { duration: 2 },
-          }}
-        /> */}
       </main>
     </div>
   );

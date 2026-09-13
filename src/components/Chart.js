@@ -8,7 +8,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-export default function ChartCompound({ data }) {
+export default function Chart({ data }) {
   return (
     <div className="w-full h-96">
       <ResponsiveContainer width="100%" height="100%">

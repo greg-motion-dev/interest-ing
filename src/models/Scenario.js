@@ -6,12 +6,13 @@ const ScenarioSchema = new mongoose.Schema(
     type: {
       type: String,
       required: true,
-      enum: ["compound-interest", "savings-goal", "retirement-gap"],
+      enum: ["compound-interest", "savings-plan"],
     },
     startCapital: { type: Number, required: true },
-    monthlyRate: { type: Number, required: true },
+    monthlyRate: { type: Number },
     duration: { type: Number, required: true },
     interestRate: { type: Number, required: true },
+    targetAmount: { type: Number },
   },
   { timestamps: true },
 );
