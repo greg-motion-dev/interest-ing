@@ -10,21 +10,34 @@ export default function ScenarioSaveButton({ type = "compound-interest" }) {
     monthlyRate,
     duration,
     interestRate,
+    targetAmount,
     activeScenarioId,
     clearActiveScenario,
   } = useCalculatorStore();
 
   const [statusMessage, setStatusMessage] = useState(null);
 
+  const getPayload = () => {
+    const baseData = {
+      type,
+      startCapital,
+      duration,
+      interestRate,
+    };
+
+    if (type === "compound-interest") {
+      return { ...baseData, monthlyRate };
+    } else {
+      return { ...baseData, targetAmount };
+    }
+  };
+
   async function handleSaveNew() {
     setStatusMessage(null);
     const newScenario = {
       type: type,
       title: "My Custom Scenario", // Ai-Feature soon to be added here
-      startCapital: startCapital,
-      monthlyRate: monthlyRate,
-      duration: duration,
-      interestRate: interestRate,
+      ...getPayload(),
     };
 
     try {
@@ -50,12 +63,7 @@ export default function ScenarioSaveButton({ type = "compound-interest" }) {
     if (!activeScenarioId) return;
     setStatusMessage(null);
 
-    const updatedData = {
-      startCapital,
-      monthlyRate,
-      duration,
-      interestRate,
-    };
+    const updatedData = getPayload();
 
     try {
       const response = await fetch(`/api/scenarios/${activeScenarioId}`, {

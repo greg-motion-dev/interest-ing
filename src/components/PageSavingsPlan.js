@@ -1,16 +1,16 @@
 import useCalculatorStore from "@/store/useCalculatorStore";
-import calculateCompoundInterest from "@/lib/calculations";
+import { calculateSavingsPlan } from "@/lib/calculations";
 import MasterInputForm from "./MasterInputForm";
 import Chart from "./Chart";
 import ScenarioList from "./ScenarioList";
 
-export default function PageCompound() {
-  const { startCapital, monthlyRate, duration, interestRate, updateValue } =
+export default function PageSavingsPlan() {
+  const { targetAmount, startCapital, duration, interestRate, updateValue } =
     useCalculatorStore();
 
-  const result = calculateCompoundInterest(
+  const result = calculateSavingsPlan(
+    targetAmount,
     startCapital,
-    monthlyRate,
     duration,
     interestRate,
   );
@@ -21,7 +21,20 @@ export default function PageCompound() {
     maximumFractionDigits: 0,
   });
 
-  const compoundSliders = [
+  const finalYearData = result.yearlyData[result.yearlyData.length - 1];
+  const totalDeposits = finalYearData?.totalPrincipal || startCapital;
+  const totalInterest = finalYearData?.totalInterest || 0;
+
+  const savingsSliders = [
+    {
+      label: "Target Amount",
+      min: 1000,
+      max: 1000000,
+      value: targetAmount,
+      onChange: (val) => updateValue("targetAmount", val),
+      sliderName: "targetAmount",
+      unit: "€",
+    },
     {
       label: "Start Capital",
       min: 0,
@@ -29,15 +42,6 @@ export default function PageCompound() {
       value: startCapital,
       onChange: (val) => updateValue("startCapital", val),
       sliderName: "startCapital",
-      unit: "€",
-    },
-    {
-      label: "Monthly Rate",
-      min: 0,
-      max: 10000,
-      value: monthlyRate,
-      onChange: (val) => updateValue("monthlyRate", val),
-      sliderName: "monthlyRate",
       unit: "€",
     },
     {
@@ -60,16 +64,12 @@ export default function PageCompound() {
     },
   ];
 
-  const finalYearData = result.yearlyData[result.yearlyData.length - 1];
-  const totalDeposits = finalYearData?.totalPrincipal || startCapital;
-  const totalInterest = finalYearData?.totalInterest || 0;
-
   const resultMetrics = [
     {
-      id: "final-capital",
-      label: "Final Capital",
-      value: currencyFormatter.format(result.finalCapital),
-      valueColor: "text-white",
+      id: "required-rate",
+      label: "Required Monthly Rate",
+      value: currencyFormatter.format(result.requiredMonthlyRate),
+      valueColor: "text-blue-400",
     },
     {
       id: "total-deposits",
@@ -88,7 +88,7 @@ export default function PageCompound() {
   return (
     <div className="w-full flex flex-col lg:flex-row gap-8 p-6">
       <div className="w-full lg:w-1/3 bg-zinc-900 p-6 rounded-2xl">
-        <MasterInputForm sliders={compoundSliders} type="compound-interest" />
+        <MasterInputForm sliders={savingsSliders} type="savings-plan" />
       </div>
 
       <div className="w-full lg:w-2/3 flex flex-col gap-6">
@@ -111,6 +111,7 @@ export default function PageCompound() {
         <div className="bg-zinc-900 p-6 rounded-2xl h-[400px]">
           <Chart data={result.yearlyData} />
         </div>
+
         <ScenarioList />
       </div>
     </div>
