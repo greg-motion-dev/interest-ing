@@ -51,6 +51,15 @@ export function calculateSavingsPlan(
   duration = Number(duration) || 0;
   interestRate = Number(interestRate) || 0;
 
+  // prevent division by zero in the formulas below
+  if (duration <= 0) {
+    return {
+      requiredMonthlyRate: 0,
+      finalCapital: startCapital,
+      yearlyData: [],
+    };
+  }
+
   const durationInMonths = duration * 12;
   const monthlyInterestRate = interestRate / 100 / 12;
 

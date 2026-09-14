@@ -3,10 +3,17 @@ import { calculateSavingsPlan } from "@/lib/calculations";
 import MasterInputForm from "./MasterInputForm";
 import Chart from "./Chart";
 import ScenarioList from "./ScenarioList";
+import ScenarioCompareSelect from "./ScenarioCompareSelect";
 
 export default function PageSavingsPlan() {
-  const { targetAmount, startCapital, duration, interestRate, updateValue } =
-    useCalculatorStore();
+  const {
+    targetAmount,
+    startCapital,
+    duration,
+    interestRate,
+    updateValue,
+    comparisonScenario,
+  } = useCalculatorStore();
 
   const result = calculateSavingsPlan(
     targetAmount,
@@ -14,6 +21,17 @@ export default function PageSavingsPlan() {
     duration,
     interestRate,
   );
+
+  const comparisonResult = comparisonScenario
+    ? calculateSavingsPlan(
+        comparisonScenario.startCapital,
+        comparisonScenario.monthlyRate,
+        comparisonScenario.duration,
+        comparisonScenario.interestRate,
+      )
+    : null;
+
+  const comparisonData = comparisonResult ? comparisonResult.yearlyData : null;
 
   const currencyFormatter = new Intl.NumberFormat("de-DE", {
     style: "currency",
@@ -107,9 +125,9 @@ export default function PageSavingsPlan() {
             </div>
           ))}
         </div>
-
+        <ScenarioCompareSelect />
         <div className="bg-zinc-900 p-6 rounded-2xl h-[400px]">
-          <Chart data={result.yearlyData} />
+          <Chart data={result.yearlyData} comparisonData={comparisonData} />
         </div>
 
         <ScenarioList />

@@ -12,6 +12,7 @@ export default function ScenarioCard({ scenario }) {
     type,
     startCapital,
     monthlyRate,
+    targetAmount,
     duration,
     interestRate,
   } = scenario;
@@ -31,7 +32,9 @@ export default function ScenarioCard({ scenario }) {
 
   const metrics = [
     { label: "Start Capital", value: startCapital, unit: "€" },
-    { label: "Monthly Rate", value: monthlyRate, unit: "€" },
+    type === "savings-plan"
+      ? { label: "Target Amount", value: targetAmount, unit: "€" }
+      : { label: "Monthly Rate", value: monthlyRate, unit: "€" },
     { label: "Duration", value: duration, unit: "Years" },
     { label: "Interest Rate", value: interestRate, unit: "%" },
   ];
@@ -44,6 +47,9 @@ export default function ScenarioCard({ scenario }) {
 
       if (response.ok) {
         await mutate("/api/scenarios");
+        if (activeScenarioId === id) {
+          clearActiveScenario();
+        }
       } else {
         setErrorMessage("Delete failed!");
         setShowConfirm(false);
@@ -63,7 +69,7 @@ export default function ScenarioCard({ scenario }) {
 
     setErrorMessage(null);
     try {
-      const response = await fetch(`/api/scenarios/_id`, {
+      const response = await fetch(`/api/scenarios/${_id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title: newTitle.trim() }),
@@ -117,10 +123,10 @@ export default function ScenarioCard({ scenario }) {
         </span>
       )}
 
-      <div className="grid grid-cols-2 gap-4 text-sm text-gray-600">
-        <div>
+      <div className="grid grid-cols-2 gap-4 text-sm text-zinc-400">
+        <div className="grid grid-cols-2 gap-2 col-span-2">
           {metrics.map((metric) => (
-            <div key={metric.label}>
+            <div key={metric.label} className="p-2.5 rounded-lg">
               <span className="block text-gray-400 text-xs">
                 {metric.label}
               </span>

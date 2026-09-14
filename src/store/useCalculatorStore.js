@@ -12,14 +12,13 @@ const useCalculatorStore = create((set) => ({
   activeScenarioId: null,
   activeCalculator: "compound-interest",
 
+  //compare charts/scenarios
+  comparisonScenario: null,
+  setComparisonScenario: (scenario) => set({ comparisonScenario: scenario }),
+  clearComparisonScenario: () => set({ comparisonScenario: null }),
+
   // to update individual range slider values
   updateValue: (key, value) => set({ [key]: value }),
-
-  setActiveCalculator: (type) =>
-    set({
-      activeCalculator: type,
-      activeScenarioId: null,
-    }),
 
   //load scenario and switchj the active tab
   loadScenario: (scenario) =>
@@ -31,9 +30,17 @@ const useCalculatorStore = create((set) => ({
       targetAmount: scenario.targetAmount || 50000,
       activeScenarioId: scenario._id,
       activeCalculator: scenario.type || "compound-interest",
+      comparisonScenario: null, // clear comparison when loading new scenario
     }),
 
-  clearActiveScenario: () => set({ activeScenarioId: null }),
+  clearActiveScenario: () =>
+    set({ activeScenarioId: null, comparisonScenario: null }),
+
+  setActiveCalculator: (type) =>
+    set({
+      activeCalculator: type,
+      activeScenarioId: null,
+    }),
 }));
 
 export default useCalculatorStore;
