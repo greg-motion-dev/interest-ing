@@ -87,25 +87,25 @@ export default function PageCompound() {
       id: "final-capital",
       label: "Final Capital",
       value: currencyFormatter.format(result.finalCapital),
-      valueColor: "text-white",
+      valueColor: "text-foreground",
     },
     {
       id: "total-deposits",
       label: "Total Deposits",
       value: currencyFormatter.format(totalDeposits),
-      valueColor: "text-white",
+      valueColor: "text-foreground",
     },
     {
       id: "total-interest",
       label: "Interest Received",
       value: `+ ${currencyFormatter.format(totalInterest)}`,
-      valueColor: "text-emerald-400",
+      valueColor: "text-gain",
     },
   ];
 
   return (
     <div className="w-full flex flex-col lg:flex-row gap-8 p-6">
-      <div className="w-full lg:w-1/3 bg-zinc-900 p-6 rounded-2xl">
+      <div className="w-full lg:w-1/3 bg-surface border border-border-subtle p-6 rounded-2xl">
         <MasterInputForm sliders={compoundSliders} type="compound-interest" />
       </div>
 
@@ -114,9 +114,9 @@ export default function PageCompound() {
           {resultMetrics.map((metric) => (
             <div
               key={metric.id}
-              className="bg-zinc-900 p-6 rounded-2xl flex flex-col"
+              className="bg-surface border border-border-subtle p-6 rounded-2xl flex flex-col"
             >
-              <p className="text-zinc-400 text-sm mb-1">{metric.label}</p>
+              <p className="text-text-muted text-sm mb-1">{metric.label}</p>
               <p
                 className={`text-2xl lg:text-3xl font-bold ${metric.valueColor}`}
               >
@@ -126,7 +126,7 @@ export default function PageCompound() {
           ))}
         </div>
         <ScenarioCompareSelect />
-        <div className="bg-zinc-900 p-6 rounded-2xl h-[400px]">
+        <div className="bg-surface border border-border-subtle p-6 rounded-2xl h-[400px]">
           <Chart data={result.yearlyData} comparisonData={comparisonData} />
         </div>
         <ScenarioList />

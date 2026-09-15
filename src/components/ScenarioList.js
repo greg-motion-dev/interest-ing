@@ -9,7 +9,7 @@ export default function ScenarioList() {
   const { data, isLoading } = useSWR("/api/scenarios", fetcher);
 
   if (isLoading) {
-    return <h2>Loading...</h2>;
+    return <p className="text-text-muted text-sm animate-pulse">Loading...</p>;
   }
   if (!data) {
     return;
@@ -20,7 +20,7 @@ export default function ScenarioList() {
   );
 
   if (scenarios.length === 0) {
-    return <p className="text-zinc-500 text-sm">No saved scenarios yet</p>;
+    return <p className="text-text-muted text-sm">No saved scenarios yet</p>;
   }
 
   return (

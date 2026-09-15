@@ -1,9 +1,12 @@
 import { useSWRConfig } from "swr";
 import { useState } from "react";
-import deleteIcon from "@/assets/delete.svg";
-import editIcon from "@/assets/edit.svg";
-import Image from "next/image";
 import useCalculatorStore from "@/store/useCalculatorStore";
+import {
+  EditIcon,
+  DeleteIcon,
+  PiggyBankIcon,
+  PercentIcon,
+} from "@/assets/Icons";
 
 export default function ScenarioCard({ scenario }) {
   const {
@@ -25,7 +28,8 @@ export default function ScenarioCard({ scenario }) {
   const [errorMessage, setErrorMessage] = useState(null);
 
   //load scenario
-  const { loadScenario, activeScenarioId } = useCalculatorStore();
+  const { loadScenario, activeScenarioId, clearActiveScenario } =
+    useCalculatorStore();
 
   // highlight card when currently active
   const isActive = activeScenarioId === _id;
@@ -47,7 +51,7 @@ export default function ScenarioCard({ scenario }) {
 
       if (response.ok) {
         await mutate("/api/scenarios");
-        if (activeScenarioId === id) {
+        if (activeScenarioId === _id) {
           clearActiveScenario();
         }
       } else {
@@ -91,16 +95,11 @@ export default function ScenarioCard({ scenario }) {
   return (
     <div
       onClick={() => loadScenario(scenario)}
-      className={`bg-white border rounded-xl p-5 shadow-sm flex flex-col justify-between space-y-4 cursor-pointer transition-all hover:border-[var(--color-primary-500)] ${
-        isActive
-          ? "border-[var(--color-primary-500)] ring-1 ring-[var(--color-primary-500)]"
-          : "border-gray-200"
+      className={`bg-surface border rounded-xl p-5 shadow-sm flex flex-col justify-between space-y-4 cursor-pointer transition-all hover:border-primary ${
+        isActive ? "border-primary ring-1 ring-primary" : "border-border-subtle"
       }`}
     >
-      <div className="flex justify-between items-start">
-        <span className="text-xs px-2.5 py-1 bg-gray-100 text-gray-600 rounded-full font-medium">
-          📈{type}
-        </span>
+      <div className="flex flex-col space-y-1">
         {isEditing ? (
           <input
             type="text"
@@ -110,50 +109,64 @@ export default function ScenarioCard({ scenario }) {
             onKeyDown={(e) => e.key === "Enter" && handleUpdateTitle()}
             onClick={(e) => e.stopPropagation()}
             autoFocus
-            className="border-b-2 border-gray-800 focus:outline-none text-right font-semibold text-gray-800 w-3/5"
+            className="border-b-2 border-foreground bg-transparent focus:outline-none font-semibold text-foreground text-lg w-full"
           />
         ) : (
-          <h3 className="font-semibold text-gray-800">{title}</h3>
+          <h3 className="font-semibold text-foreground text-lg tracking-tight">
+            {title}
+          </h3>
         )}
       </div>
 
       {errorMessage && (
-        <span className="text-xs text-[var(--color-secondary-500)] font-medium">
+        <span className="text-xs text-secondary font-medium">
           {errorMessage}
         </span>
       )}
 
-      <div className="grid grid-cols-2 gap-4 text-sm text-zinc-400">
+      <div className="grid grid-cols-2 gap-4 text-sm text-text-muted">
         <div className="grid grid-cols-2 gap-2 col-span-2">
           {metrics.map((metric) => (
-            <div key={metric.label} className="p-2.5 rounded-lg">
-              <span className="block text-gray-400 text-xs">
+            <div
+              key={metric.label}
+              className="p-2.5 rounded-lg bg-surface-elevated"
+            >
+              <span className="block text-text-muted text-xs">
                 {metric.label}
               </span>
-              <span className="font-medium text-gray-800">
+              <span className="font-medium text-foreground">
                 {metric.value} {metric.unit}
               </span>
             </div>
           ))}
         </div>
 
-        <div className="flex items-end justify-end">
+        <div className="flex items-center justify-between col-span-2 pt-2">
+          <div className="flex items-center gap-1.5 text-xs px-2.5 py-1 bg-surface-elevated text-text-muted rounded-full font-medium">
+            {type === "savings-plan" ? (
+              <PiggyBankIcon className="w-5 h-5 text-secondary" />
+            ) : (
+              <PercentIcon className="w-5 h-5 text-primary" />
+            )}
+            <span className="capitalize">{type.replace("-", " ")}</span>
+          </div>
+
           {showConfirm ? (
             <div
-              className="flex items-center gap-1 bg-gray-50 p-1 rounded-lg border border-gray-200"
+              className="flex items-center gap-1 bg-surface p-1 rounded-lg border border-border-subtle"
               onClick={(e) => e.stopPropagation()}
             >
               <button
                 type="button"
                 onClick={handleDelete}
-                className="text-xs bg-[var(--color-secondary-500)] text-white px-2 py-1 rounded hover:bg-[var(--color-secondary-500)] transition-colors font-medium"
+                className="text-xs bg-secondary text-white px-2 py-1 rounded hover:opacity-90 transition-opacity font-medium"
               >
                 Delete
               </button>
               <button
                 type="button"
                 onClick={() => setShowConfirm(false)}
-                className="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded hover:bg-gray-300 transition-colors font-medium"
+                className="text-xs bg-surface-elevated text-foreground px-2 py-1 rounded hover:opacity-80 transition-opacity font-medium"
               >
                 Cancel
               </button>
@@ -161,7 +174,7 @@ export default function ScenarioCard({ scenario }) {
           ) : (
             <div className="flex items-center gap-1">
               <button
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                className="p-2 hover:bg-surface-elevated rounded-lg transition-colors"
                 onClick={(e) => {
                   e.stopPropagation();
                   setIsEditing(true);
@@ -169,10 +182,10 @@ export default function ScenarioCard({ scenario }) {
                 type="button"
                 aria-label="edit"
               >
-                <Image src={editIcon} alt="edit" width={20} height={20} />
+                <EditIcon className="w-5 h-5 text-text-muted hover:text-foreground transition-colors" />
               </button>
               <button
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                className="p-2 hover:bg-surface-elevated rounded-lg transition-colors"
                 onClick={(e) => {
                   e.stopPropagation();
                   setShowConfirm(true);
@@ -180,7 +193,7 @@ export default function ScenarioCard({ scenario }) {
                 type="button"
                 aria-label="delete"
               >
-                <Image src={deleteIcon} alt="Delete" width={20} height={20} />
+                <DeleteIcon className="w-5 h-5 text-text-muted hover:text-foreground transition-colors" />
               </button>
             </div>
           )}

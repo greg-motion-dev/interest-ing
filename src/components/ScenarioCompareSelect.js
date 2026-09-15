@@ -20,14 +20,14 @@ export default function ScenarioCompareSelect() {
 
   if (error)
     return (
-      <div className="text-[var(--color-secondary-500)]">
+      <div className="text-secondary text-sm font-medium">
         Failed to load scenarios
       </div>
     );
 
   if (isLoading)
     return (
-      <div className="text-zinc-500 text-sm animate-pulse">Loading...</div>
+      <div className="text-text-muted text-sm animate-pulse">Loading...</div>
     );
 
   if (!scenarios || scenarios.length === 0) return null;
@@ -56,23 +56,41 @@ export default function ScenarioCompareSelect() {
     <div className="flex flex-col gap-2 mb-6">
       <label
         htmlFor="compare-select"
-        className="text-zinc-400 text-sm font-medium"
+        className="text-text-muted text-sm font-medium"
       >
         Compare your current selection with a saved scenario:
       </label>
-      <select
-        id="compare-select"
-        value={comparisonScenario?._id || ""}
-        onChange={handleSelect}
-        className="bg-zinc-800 border border-zinc-700 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 outline-none appearance-none cursor-pointer"
-      >
-        <option value="">-- Select a scenario --</option>
-        {availableScenarios.map((scenario) => (
-          <option key={scenario._id} value={scenario._id}>
-            {scenario.title} ({scenario.duration} yrs, {scenario.interestRate}%)
-          </option>
-        ))}
-      </select>
+      <div className="relative">
+        <select
+          id="compare-select"
+          value={comparisonScenario?._id || ""}
+          onChange={handleSelect}
+          className="bg-surface-elevated border border-border-subtle text-foreground text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent block w-full p-2.5 appearance-none cursor-pointer pr-10 transition-all"
+        >
+          <option value="">-- Select a scenario --</option>
+          {availableScenarios.map((scenario) => (
+            <option key={scenario._id} value={scenario._id}>
+              {scenario.title} ({scenario.duration} yrs, {scenario.interestRate}
+              %)
+            </option>
+          ))}
+        </select>
+        <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-text-muted">
+          <svg
+            className="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+        </div>
+      </div>
     </div>
   );
 }
