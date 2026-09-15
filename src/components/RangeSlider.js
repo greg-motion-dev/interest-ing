@@ -33,16 +33,16 @@ export default function RangeSlider({
 
   const handleBlur = () => {
     setIsFocused(false);
-    let finaleValue = Number(inputValue);
+    let finalValue = Number(inputValue);
 
     if (inputValue === "" || isNaN(finalValue) || finalValue < min) {
-      finaleValue = min;
-    } else if (finaleValue > max) {
-      finaleValue = max;
+      finalValue = min;
+    } else if (finalValue > max) {
+      finalValue = max;
     }
 
-    setInputValue(finaleValue);
-    onChange(finaleValue);
+    setInputValue(finalValue);
+    onChange(finalValue);
   };
 
   const paddingClass = isFocused ? "pr-3" : unit.length > 1 ? "pr-12" : "pr-7";
