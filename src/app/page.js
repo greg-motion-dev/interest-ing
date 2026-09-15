@@ -8,8 +8,8 @@ import { useState } from "react";
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-red font-sans">
-      <main className="flex-1 w-full max-w-7xl mx-auto flex-col items-center justify-between py-12 px-4 md:px-8 bg-white dark:bg-black sm:items-start">
+    <div className="flex flex-col flex-1 items-center justify-center font-sans">
+      <main className="flex-1 w-full max-w-7xl mx-auto flex-col items-center justify-between py-12 px-4 md:px-8 sm:items-start">
         {/* <Image
           className="dark:invert h-5 w-[100px]"
           src="/next.svg"

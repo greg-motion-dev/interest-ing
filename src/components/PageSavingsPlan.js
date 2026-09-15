@@ -3,10 +3,17 @@ import { calculateSavingsPlan } from "@/lib/calculations";
 import MasterInputForm from "./MasterInputForm";
 import Chart from "./Chart";
 import ScenarioList from "./ScenarioList";
+import ScenarioCompareSelect from "./ScenarioCompareSelect";
 
 export default function PageSavingsPlan() {
-  const { targetAmount, startCapital, duration, interestRate, updateValue } =
-    useCalculatorStore();
+  const {
+    targetAmount,
+    startCapital,
+    duration,
+    interestRate,
+    updateValue,
+    comparisonScenario,
+  } = useCalculatorStore();
 
   const result = calculateSavingsPlan(
     targetAmount,
@@ -14,6 +21,17 @@ export default function PageSavingsPlan() {
     duration,
     interestRate,
   );
+
+  const comparisonResult = comparisonScenario
+    ? calculateSavingsPlan(
+        comparisonScenario.targetAmount,
+        comparisonScenario.startCapital,
+        comparisonScenario.duration,
+        comparisonScenario.interestRate,
+      )
+    : null;
+
+  const comparisonData = comparisonResult ? comparisonResult.yearlyData : null;
 
   const currencyFormatter = new Intl.NumberFormat("de-DE", {
     style: "currency",
@@ -69,25 +87,25 @@ export default function PageSavingsPlan() {
       id: "required-rate",
       label: "Required Monthly Rate",
       value: currencyFormatter.format(result.requiredMonthlyRate),
-      valueColor: "text-blue-400",
+      valueColor: "text-primary",
     },
     {
       id: "total-deposits",
       label: "Total Deposits",
       value: currencyFormatter.format(totalDeposits),
-      valueColor: "text-white",
+      valueColor: "text-foreground",
     },
     {
       id: "total-interest",
       label: "Interest Received",
       value: `+ ${currencyFormatter.format(totalInterest)}`,
-      valueColor: "text-emerald-400",
+      valueColor: "text-gain",
     },
   ];
 
   return (
     <div className="w-full flex flex-col lg:flex-row gap-8 p-6">
-      <div className="w-full lg:w-1/3 bg-zinc-900 p-6 rounded-2xl">
+      <div className="w-full lg:w-1/3 bg-surface border border-border-subtle p-6 rounded-2xl">
         <MasterInputForm sliders={savingsSliders} type="savings-plan" />
       </div>
 
@@ -96,9 +114,9 @@ export default function PageSavingsPlan() {
           {resultMetrics.map((metric) => (
             <div
               key={metric.id}
-              className="bg-zinc-900 p-6 rounded-2xl flex flex-col"
+              className="bg-surface border border-border-subtle p-6 rounded-2xl flex flex-col"
             >
-              <p className="text-zinc-400 text-sm mb-1">{metric.label}</p>
+              <p className="text-text-muted text-sm mb-1">{metric.label}</p>
               <p
                 className={`text-2xl lg:text-3xl font-bold ${metric.valueColor}`}
               >
@@ -107,9 +125,9 @@ export default function PageSavingsPlan() {
             </div>
           ))}
         </div>
-
-        <div className="bg-zinc-900 p-6 rounded-2xl h-[400px]">
-          <Chart data={result.yearlyData} />
+        <ScenarioCompareSelect />
+        <div className="bg-surface border border-border-subtle p-6 rounded-2xl h-[400px]">
+          <Chart data={result.yearlyData} comparisonData={comparisonData} />
         </div>
 
         <ScenarioList />

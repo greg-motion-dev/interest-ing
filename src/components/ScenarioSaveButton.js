@@ -1,6 +1,5 @@
 import useCalculatorStore from "@/store/useCalculatorStore";
-import saveIcon from "@/assets/save.svg";
-import Image from "next/image";
+import { SaveIcon } from "@/assets/Icons";
 import { mutate } from "swr";
 import { useState } from "react";
 
@@ -89,15 +88,15 @@ export default function ScenarioSaveButton({ type = "compound-interest" }) {
         <div className="flex flex-wrap gap-2">
           <button
             onClick={handleUpdateCurrent}
-            className="flex items-center justify-center gap-2 bg-[var(--color-primary-500)] text-white px-4 py-2 rounded-lg hover: bg-[var(--color-primary-500)] transition-colors w-fit"
+            className="flex items-center justify-center gap-2 bg-primary text-white px-4 py-2 rounded-lg hover:opacity-90 transition-opacity w-fit"
           >
-            <Image src={saveIcon} alt="Update" width={20} height={20} />
+            <SaveIcon className="w-5 h-5" />
             <span className="font-medium text-sm">Update Current</span>
           </button>
 
           <button
             onClick={handleSaveNew}
-            className="flex items-center justify-center gap-2 bg-zinc-800 text-white px-4 py-2 rounded-lg hover:bg-zinc-700 transition-colors w-fit border border-zinc-700"
+            className="flex items-center justify-center gap-2 bg-surface-elevated text-foreground px-4 py-2 rounded-lg hover:opacity-80 transition-opacity w-fit border border-border-subtle"
           >
             <span className="font-medium text-sm">Save as New</span>
           </button>
@@ -105,9 +104,9 @@ export default function ScenarioSaveButton({ type = "compound-interest" }) {
       ) : (
         <button
           onClick={handleSaveNew}
-          className="flex items-center justify-center gap-2 bg-zinc-800 text-white px-4 py-2 rounded-lg hover:bg-zinc-700 transition-colors w-fit border border-zinc-700"
+          className="flex items-center justify-center gap-2 bg-surface-elevated text-foreground px-4 py-2 rounded-lg hover:opacity-80 transition-opacity w-fit border border-border-subtle"
         >
-          <Image src={saveIcon} alt="Save" width={20} height={20} />
+          <SaveIcon className="w-5 h-5" />{" "}
           <span className="font-medium text-sm">Save Scenario</span>
         </button>
       )}
@@ -117,8 +116,8 @@ export default function ScenarioSaveButton({ type = "compound-interest" }) {
         <span
           className={`text-xs font-medium mt-1 ${
             statusMessage.includes("Failed") || statusMessage.includes("error")
-              ? "text-[var(--color-secondary-500)]"
-              : "text-[var(--color-primary-500)]"
+              ? "text-secondary"
+              : "text-primary"
           }`}
         >
           {statusMessage}

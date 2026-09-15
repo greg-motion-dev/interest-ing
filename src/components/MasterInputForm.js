@@ -7,7 +7,7 @@ export default function MasterInputForm({ sliders, type }) {
       {sliders.map((slider) => (
         <RangeSlider key={slider.sliderName} {...slider} />
       ))}
-      <div className="pt-4 border-t border-zinc-800">
+      <div className="pt-4 border-border-subtle">
         <ScenarioSaveButton type={type} />
       </div>
     </div>
