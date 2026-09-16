@@ -152,6 +152,9 @@ export default function Chart({ data, comparisonData }) {
             dataKey="year"
             stroke="var(--color-text-muted)"
             tickMargin={10}
+            domain={[0, "dataMax"]} // force x axis to start at 0
+            type="number"
+            allowDataOverflow
           />
           <YAxis
             stroke="var(--color-text-muted)"

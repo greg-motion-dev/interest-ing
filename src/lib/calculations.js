@@ -12,7 +12,13 @@ export default function calculateCompoundInterest(
 
   let currentCapital = startCapital;
   let totalPrincipal = startCapital; // reines Einzahlungskapital
-  let yearlyData = [];
+  let yearlyData = [
+    {
+      year: 0,
+      totalPrincipal: startCapital,
+      totalInterest: 0,
+    },
+  ];
 
   // monthly interest rate of the annual interest rate
   const monthlyInterestRate = interestRate / 100 / 12;
@@ -56,7 +62,13 @@ export function calculateSavingsPlan(
     return {
       requiredMonthlyRate: 0,
       finalCapital: startCapital,
-      yearlyData: [],
+      yearlyData: [
+        {
+          year: 0,
+          totalPrincipal: startCapital,
+          totalInterest: 0,
+        },
+      ],
     };
   }
 
