@@ -33,28 +33,69 @@ export default function ScenarioSaveButton({ type = "compound-interest" }) {
 
   async function handleSaveNew() {
     setStatusMessage(null);
-    const newScenario = {
+
+    const initialScenario = {
       type: type,
-      title: "My Custom Scenario", // Ai-Feature soon to be added here
+      title: "Generating title...",
       ...getPayload(),
     };
+
+    let createdScenarioId = null;
 
     try {
       const response = await fetch("/api/scenarios", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newScenario),
+        body: JSON.stringify(initialScenario),
       });
       if (response.ok) {
+        const savedData = await response.json();
+        createdScenarioId = savedData._id;
+
         setStatusMessage("Saved new scenario!");
         await mutate("/api/scenarios");
         clearActiveScenario();
         setTimeout(() => setStatusMessage(null), 3000);
       } else {
         setStatusMessage("Saving failed!");
+        return;
       }
     } catch (error) {
       setStatusMessage("Network error");
+      return;
+    }
+    if (!createdScenarioId) return;
+
+    try {
+      const aiResponse = await fetch("/api/ai/naming", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(getPayload()),
+      });
+
+      if (aiResponse.ok) {
+        const aiData = await aiResponse.json();
+
+        if (aiData.title) {
+          const patchResponse = await fetch(
+            `/api/scenarios/${createdScenarioId}`,
+            {
+              method: "PATCH",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ title: aiData.title }),
+            },
+          );
+
+          if (patchResponse.ok) {
+            await mutate("/api/scenarios");
+          }
+        }
+      }
+    } catch (error) {
+      console.error(
+        "Background AI Naming failed, keeping fallback title",
+        error,
+      );
     }
   }
 
@@ -98,7 +139,8 @@ export default function ScenarioSaveButton({ type = "compound-interest" }) {
             onClick={handleSaveNew}
             className="flex items-center justify-center gap-2 bg-surface-elevated text-foreground px-4 py-2 rounded-lg hover:opacity-80 transition-opacity w-fit border border-border-subtle"
           >
-            <span className="font-medium text-sm">Save as New</span>
+            <SaveIcon className="w-5 h-5" />
+            <span className="font-medium text-sm">Save as new</span>
           </button>
         </div>
       ) : (
@@ -106,12 +148,11 @@ export default function ScenarioSaveButton({ type = "compound-interest" }) {
           onClick={handleSaveNew}
           className="flex items-center justify-center gap-2 bg-surface-elevated text-foreground px-4 py-2 rounded-lg hover:opacity-80 transition-opacity w-fit border border-border-subtle"
         >
-          <SaveIcon className="w-5 h-5" />{" "}
+          <SaveIcon className="w-5 h-5" />
           <span className="font-medium text-sm">Save Scenario</span>
         </button>
       )}
 
-      {/* Clean UI feedback replacing console.log */}
       {statusMessage && (
         <span
           className={`text-xs font-medium mt-1 ${

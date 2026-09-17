@@ -11,7 +11,7 @@ export default function CalculatorLayout() {
 
   return (
     <div className="bg-background text-foreground p-4 md:p-8 font-sans transition-colors duration-300">
-      <main className="max-w-7xl mx-auto flex flex-col lg:flex-row gap8">
+      <main className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-8">
         <section className="w-full h-fit">
           <div className="bg-surface/70 backdrop-blur-xl rounded-3xl p-6 shadow-xl border border-border-subtle">
             {/*  Navigation Bar */}

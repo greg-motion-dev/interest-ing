@@ -7,6 +7,7 @@
   --surface: #ffffff;
   --surface-elevated: #f0f0f0;
   --border-subtle: #d4d4d8;
+  --text-muted: #6b7280;
 
   /* -- Main Brand Colors (Light) -- */
   --color-primary-500: oklch(48.24% 0.07965 204.203);
@@ -29,7 +30,7 @@
     --text-muted: #a1a1aa;
 
     /* -- Main Brand Colors (Dark) -- */
-    --color-primary-500: #2f959f;
+    --color-primary-500: oklch(61.692% 0.09169 204.601);
     --color-secondary-500: oklch(72% 0.18 29.105);
     --color-accent-500: oklch(92% 0.18 103.864);
   }

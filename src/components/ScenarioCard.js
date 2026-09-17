@@ -6,6 +6,7 @@ import {
   DeleteIcon,
   PiggyBankIcon,
   PercentIcon,
+  SpinnerIcon,
 } from "@/assets/Icons";
 
 export default function ScenarioCard({ scenario }) {
@@ -111,6 +112,12 @@ export default function ScenarioCard({ scenario }) {
             autoFocus
             className="border-b-2 border-foreground bg-transparent focus:outline-none font-semibold text-foreground text-lg w-full"
           />
+        ) : title === "Generating title..." ? (
+          /* 👈 2. Render spinner when AI is working in the background */
+          <div className="flex items-center gap-2 text-text-muted">
+            <SpinnerIcon className="w-5 h-5 animate-spin text-primary" />
+            <span className="font-medium text-sm italic">{title}</span>
+          </div>
         ) : (
           <h3 className="font-semibold text-foreground text-lg tracking-tight">
             {title}
@@ -177,6 +184,7 @@ export default function ScenarioCard({ scenario }) {
                 className="p-2 hover:bg-surface-elevated rounded-lg transition-colors"
                 onClick={(e) => {
                   e.stopPropagation();
+                  setNewTitle(title);
                   setIsEditing(true);
                 }}
                 type="button"
