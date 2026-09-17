@@ -18,43 +18,106 @@ const CustomTooltip = ({ active, payload, label }) => {
     });
 
     return (
-      <div className="bg-surface-elevated border border-border-subtle p-4 rounded-lg shadow-xl">
-        <p className="text-text-muted mb-2 font-medium">Year {label}</p>
-        <div className="mb-3">
-          <p className="text-xs text-text-muted font-bold uppercase tracking-wider mb-1">
+      <div className="bg-surface-elevated border border-border-subtle p-4 rounded-xl shadow-xl backdrop-blur-md min-w-[220px]">
+        <p className="text-text-muted mb-3 font-medium">Year {label}</p>
+
+        <div className="flex flex-col gap-2 mb-3">
+          <p className="text-xs text-foreground font-bold uppercase tracking-wider mb-1 flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-primary"></span>
             Active Scenario
           </p>
-          <p className="text-secondary text-sm">
-            Deposits:{" "}
-            {currencyFormatter.format(payload[0]?.payload.totalPrincipal || 0)}
-          </p>
-          <p className="text-primary text-sm">
-            Interest:{" "}
-            {currencyFormatter.format(payload[0]?.payload.totalInterest || 0)}
-          </p>
+
+          <div className="flex justify-between items-center text-sm">
+            <span className="text-text-muted flex items-center gap-2">
+              <svg width="12" height="4" className="overflow-visible">
+                <line
+                  x1="0"
+                  y1="2"
+                  x2="12"
+                  y2="2"
+                  stroke="var(--color-primary)"
+                  strokeWidth="2"
+                  strokeDasharray="2 2"
+                />
+              </svg>
+              Interest{" "}
+              <span className="text-[10px] text-text-muted opacity-75">
+                (Dashed)
+              </span>
+            </span>
+            <span className="font-medium text-foreground">
+              {currencyFormatter.format(payload[0]?.payload.totalInterest || 0)}
+            </span>
+          </div>
+
+          <div className="flex justify-between items-center text-sm">
+            <span className="text-text-muted flex items-center gap-2">
+              <span className="w-3 h-0.5 rounded-full bg-primary opacity-90 inline-block"></span>
+              Deposits{" "}
+              <span className="text-[10px] text-text-muted opacity-75">
+                (Solid)
+              </span>
+            </span>
+            <span className="font-medium text-foreground">
+              {currencyFormatter.format(
+                payload[0]?.payload.totalPrincipal || 0,
+              )}
+            </span>
+          </div>
         </div>
+
         {payload[0]?.payload.compTotalPrincipal !== undefined && (
-          <div className="pt-2 border-t border-border-subtle">
-            <p className="text-xs text-text-muted font-bold uppercase tracking-wider mb-1 mt-1">
+          <div className="flex flex-col gap-2 pt-1">
+            <p className="text-xs text-foreground font-bold uppercase tracking-wider mb-1 mt-1 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-secondary"></span>
               Comparison
             </p>
-            <p className="text-text-muted text-sm">
-              Deposits:{" "}
-              {currencyFormatter.format(
-                payload[0]?.payload.compTotalPrincipal || 0,
-              )}
-            </p>
-            <p className="text-foreground text-sm">
-              Interest:{" "}
-              {currencyFormatter.format(
-                payload[0]?.payload.compTotalInterest || 0,
-              )}
-            </p>
+
+            <div className="flex justify-between items-center text-sm">
+              <span className="text-text-muted flex items-center gap-2">
+                <svg width="12" height="4" className="overflow-visible">
+                  <line
+                    x1="0"
+                    y1="2"
+                    x2="12"
+                    y2="2"
+                    stroke="var(--color-secondary)"
+                    strokeWidth="2"
+                    strokeDasharray="2 2"
+                  />
+                </svg>
+                Interest{" "}
+                <span className="text-[10px] text-text-muted opacity-75">
+                  (Dashed)
+                </span>
+              </span>
+              <span className="font-medium text-foreground">
+                {currencyFormatter.format(
+                  payload[0]?.payload.compTotalInterest || 0,
+                )}
+              </span>
+            </div>
+
+            <div className="flex justify-between items-center text-sm">
+              <span className="text-text-muted flex items-center gap-2">
+                <span className="w-3 h-0.5 rounded-full bg-secondary opacity-90 inline-block"></span>
+                Deposits{" "}
+                <span className="text-[10px] text-text-muted opacity-75">
+                  (Solid)
+                </span>
+              </span>
+              <span className="font-medium text-foreground">
+                {currencyFormatter.format(
+                  payload[0]?.payload.compTotalPrincipal || 0,
+                )}
+              </span>
+            </div>
           </div>
         )}
       </div>
     );
   }
+  return null;
 };
 
 export default function Chart({ data, comparisonData }) {
@@ -70,10 +133,8 @@ export default function Chart({ data, comparisonData }) {
 
       merged.push({
         year: i,
-        // Active data
         totalPrincipal: activeYear.totalPrincipal,
         totalInterest: activeYear.totalInterest,
-        // Comparison data
         compTotalPrincipal: compYear.totalPrincipal,
         compTotalInterest: compYear.totalInterest,
       });
@@ -89,60 +150,60 @@ export default function Chart({ data, comparisonData }) {
           data={mergedData}
           margin={{ top: 10, right: 10, left: 0, bottom: 30 }}
         >
-          {/* Active Gradients */}
           <defs>
-            <linearGradient id="colorPrincipal" x1="0" y1="0" x2="0" y2="1">
-              <stop
-                offset="5%"
-                stopColor="var(--color-secondary)"
-                stopOpacity={0.8}
-              />
-              <stop
-                offset="95%"
-                stopColor="var(--color-secondary)"
-                stopOpacity={0}
-              />
-            </linearGradient>
-
-            <linearGradient id="colorInterest" x1="0" y1="0" x2="0" y2="1">
+            <linearGradient id="activePrincipal" x1="0" y1="0" x2="0" y2="1">
               <stop
                 offset="5%"
                 stopColor="var(--color-primary)"
-                stopOpacity={0.8}
+                stopOpacity={0.9}
               />
               <stop
                 offset="95%"
                 stopColor="var(--color-primary)"
-                stopOpacity={0.2}
+                stopOpacity={0.1}
               />
             </linearGradient>
 
-            {/* Comparison Gradients */}
+            <linearGradient id="activeInterest" x1="0" y1="0" x2="0" y2="1">
+              <stop
+                offset="5%"
+                stopColor="var(--color-primary)"
+                stopOpacity={0.4}
+              />
+              <stop
+                offset="95%"
+                stopColor="var(--color-primary)"
+                stopOpacity={0.1}
+              />
+            </linearGradient>
+
             <linearGradient id="compPrincipal" x1="0" y1="0" x2="0" y2="1">
               <stop
                 offset="5%"
-                stopColor="var(--color-text-muted)"
-                stopOpacity={0.3}
+                stopColor="var(--color-secondary)"
+                stopOpacity={0.9}
               />
               <stop
                 offset="95%"
-                stopColor="var(--color-text-muted)"
-                stopOpacity={0}
+                stopColor="var(--color-secondary)"
+                stopOpacity={0.01}
               />
             </linearGradient>
+
             <linearGradient id="compInterest" x1="0" y1="0" x2="0" y2="1">
               <stop
                 offset="5%"
-                stopColor="var(--color-text-foreground)"
-                stopOpacity={0.3}
+                stopColor="var(--color-secondary)"
+                stopOpacity={0.4}
               />
               <stop
                 offset="95%"
-                stopColor="var(--color-text-foreground)"
-                stopOpacity={0}
+                stopColor="var(--color-secondary)"
+                stopOpacity={0.1}
               />
             </linearGradient>
           </defs>
+
           <CartesianGrid
             strokeDasharray="3 3"
             stroke="var(--color-border-subtle)"
@@ -152,7 +213,7 @@ export default function Chart({ data, comparisonData }) {
             dataKey="year"
             stroke="var(--color-text-muted)"
             tickMargin={10}
-            domain={[0, "dataMax"]} // force x axis to start at 0
+            domain={[0, "dataMax"]}
             type="number"
             allowDataOverflow
           />
@@ -161,7 +222,8 @@ export default function Chart({ data, comparisonData }) {
             tickFormatter={(val) => `€${val / 1000}k`}
             width={60}
           />
-          <Tooltip content={<CustomTooltip />} />
+
+          <Tooltip content={<CustomTooltip />} offset={20} />
 
           {comparisonData && (
             <>
@@ -169,9 +231,8 @@ export default function Chart({ data, comparisonData }) {
                 type="monotone"
                 dataKey="compTotalPrincipal"
                 stackId="comparison"
-                stroke="var(--color-text-muted)"
+                stroke="var(--color-secondary)"
                 strokeWidth={2}
-                strokeDasharray="5 5"
                 fill="url(#compPrincipal)"
                 connectNulls
               />
@@ -179,7 +240,7 @@ export default function Chart({ data, comparisonData }) {
                 type="monotone"
                 dataKey="compTotalInterest"
                 stackId="comparison"
-                stroke="var(--color-text-foreground)"
+                stroke="var(--color-secondary)"
                 strokeWidth={2}
                 strokeDasharray="5 5"
                 fill="url(#compInterest)"
@@ -191,18 +252,19 @@ export default function Chart({ data, comparisonData }) {
           <Area
             type="monotone"
             dataKey="totalPrincipal"
-            stackId="1"
-            stroke="var(--color-secondary)"
+            stackId="active"
+            stroke="var(--color-primary)"
             strokeWidth={3}
-            fill="url(#colorPrincipal)"
+            fill="url(#activePrincipal)"
           />
           <Area
             type="monotone"
-            dataKey="totalInterest" // This maps to the key in yearlyData array
-            stackId="1"
+            dataKey="totalInterest"
+            stackId="active"
             stroke="var(--color-primary)"
             strokeWidth={3}
-            fill="url(#colorInterest)"
+            strokeDasharray="5 5"
+            fill="url(#activeInterest)"
           />
         </AreaChart>
       </ResponsiveContainer>

@@ -4,7 +4,8 @@ import MasterInputForm from "./MasterInputForm";
 import Chart from "./Chart";
 import ScenarioList from "./ScenarioList";
 import ScenarioCompareSelect from "./ScenarioCompareSelect";
-import ExpandableRateCard from "./ExpandableRateCard"; // <-- Import the new card
+import ExpandableRateCard from "./ExpandableRateCard";
+import { useEffect } from "react";
 
 export default function PageSavingsPlan() {
   const {
@@ -82,6 +83,11 @@ export default function PageSavingsPlan() {
       unit: "%",
     },
   ];
+  const savingsSummaryText = `To reach your target of ${currencyFormatter.format(targetAmount)} over ${duration} ${duration === 1 ? "year" : "years"} at an interest rate of ${interestRate}%, you need a required monthly rate of ${currencyFormatter.format(result.requiredMonthlyRate)}. This consists of ${currencyFormatter.format(totalDeposits)} in total deposits and ${currencyFormatter.format(totalInterest)} in interest or capital gains.`;
+
+  useEffect(() => {
+    updateValue("comparisonScenario", null);
+  }, []);
 
   return (
     <div className="w-full flex flex-col lg:flex-row gap-8 p-6">
@@ -90,12 +96,11 @@ export default function PageSavingsPlan() {
       </div>
 
       <div className="w-full lg:w-2/3 flex flex-col gap-6">
-        {/* Unpacked Metrics Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {/* The Smart Expandable AI Card */}
           <ExpandableRateCard
             label="Required Monthly Rate"
             value={currencyFormatter.format(result.requiredMonthlyRate)}
+            valueSize="text-xl lg:text-2xl tracking-tight"
             valueColor="text-primary"
             finalAmount={targetAmount}
             duration={duration}
@@ -103,26 +108,51 @@ export default function PageSavingsPlan() {
             totalInterest={totalInterest}
           />
 
-          {/* Standard Metric 2 */}
-          <div className="bg-surface border border-border-subtle p-6 rounded-2xl flex flex-col">
-            <p className="text-text-muted text-sm mb-1">Total Deposits</p>
-            <p className="text-2xl lg:text-3xl font-bold text-foreground">
+          <div className="bg-surface border border-border-subtle p-6 rounded-2xl flex flex-col justify-between">
+            <p className="text-text-muted text-xs font-medium mb-1">
+              Total Deposits
+            </p>
+            <p className="text-xl lg:text-2xl font-bold text-foreground tracking-tight">
               {currencyFormatter.format(totalDeposits)}
             </p>
           </div>
 
-          {/* Standard Metric 3 */}
-          <div className="bg-surface border border-border-subtle p-6 rounded-2xl flex flex-col">
-            <p className="text-text-muted text-sm mb-1">Interest Received</p>
-            <p className="text-2xl lg:text-3xl font-bold text-gain">
+          <div className="bg-surface border border-border-subtle p-6 rounded-2xl flex flex-col justify-between">
+            <p className="text-text-muted text-xs font-medium mb-1">
+              Interest Received
+            </p>
+            <p className="text-xl lg:text-2xl font-bold text-gain tracking-tight">
               + {currencyFormatter.format(totalInterest)}
             </p>
           </div>
         </div>
-
+        <div className="bg-surface border border-border-subtle p-6 rounded-2xl text-sm text-text-muted leading-relaxed">
+          <p>
+            To reach your target of{" "}
+            <strong className="text-foreground font-semibold">
+              {currencyFormatter.format(targetAmount)}
+            </strong>{" "}
+            over {duration} {duration === 1 ? "year" : "years"} at an interest
+            rate of{" "}
+            <strong className="text-foreground font-semibold">
+              {interestRate}%
+            </strong>
+            , you need a required monthly rate of{" "}
+            <strong className="text-primary font-bold">
+              {currencyFormatter.format(result.requiredMonthlyRate)}
+            </strong>
+            . This consists of{" "}
+            <strong className="text-foreground font-semibold">
+              {currencyFormatter.format(totalDeposits)}
+            </strong>{" "}
+            in total deposits and{" "}
+            <strong className="text-gain font-bold">
+              + {currencyFormatter.format(totalInterest)}
+            </strong>{" "}
+            in interest or capital gains.
+          </p>
+        </div>
         <ScenarioCompareSelect />
-
-        {/* The ActionPlanCard is gone, keeping the layout perfectly clean! */}
 
         <div className="bg-surface border border-border-subtle p-6 rounded-2xl h-[400px]">
           <Chart data={result.yearlyData} comparisonData={comparisonData} />

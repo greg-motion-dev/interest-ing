@@ -4,7 +4,6 @@ export default function calculateCompoundInterest(
   duration,
   interestRate,
 ) {
-  //prevent NaN by turning incoming values to numbers
   startCapital = Number(startCapital) || 0;
   monthlyRate = Number(monthlyRate) || 0;
   duration = Number(duration) || 0;
@@ -20,21 +19,17 @@ export default function calculateCompoundInterest(
     },
   ];
 
-  // monthly interest rate of the annual interest rate
   const monthlyInterestRate = interestRate / 100 / 12;
-
   const durationInMonths = duration * 12;
 
-  //loop through every month to add compound interest
   for (let month = 1; month <= durationInMonths; month++) {
-    currentCapital = currentCapital * (1 + monthlyInterestRate);
     currentCapital += monthlyRate;
+    currentCapital = currentCapital * (1 + monthlyInterestRate);
     totalPrincipal += monthlyRate;
 
     if (month % 12 === 0) {
       const year = month / 12;
 
-      //pure interest gathered in a year
       const totalInterest = currentCapital - totalPrincipal;
       yearlyData.push({ year, totalPrincipal, totalInterest });
     }
@@ -51,7 +46,7 @@ export function calculateSavingsPlan(
   duration,
   interestRate,
 ) {
-  //prevent NaN by turning incoming values to numbers
+  // prevent NaN by turning incoming values to numbers
   targetAmount = Number(targetAmount) || 0;
   startCapital = Number(startCapital) || 0;
   duration = Number(duration) || 0;
@@ -84,17 +79,19 @@ export function calculateSavingsPlan(
     const compoundFactor = Math.pow(1 + monthlyInterestRate, durationInMonths);
     const futureValueOfStartCapital = startCapital * compoundFactor;
 
-    // If startCcapital alone already exceeds the target due to interest, no monthly rate is needed
+    // If startCapital alone already exceeds the target due to interest, no monthly rate is needed
     if (futureValueOfStartCapital >= targetAmount) {
       requiredMonthlyRate = 0;
     } else {
+      // FIX: Adjusted formula for "vorschüssig" (beginning of month deposits)
       requiredMonthlyRate =
         (targetAmount - futureValueOfStartCapital) *
-        (monthlyInterestRate / (compoundFactor - 1));
+        (monthlyInterestRate /
+          ((compoundFactor - 1) * (1 + monthlyInterestRate)));
     }
   }
 
-  // How to prrevent negative savings rates
+  // Prevent negative savings rates
   requiredMonthlyRate = Math.max(0, requiredMonthlyRate);
 
   // Generate the chart data matching the exact structure of the compound calculator
@@ -109,8 +106,9 @@ export function calculateSavingsPlan(
   ];
 
   for (let month = 1; month <= durationInMonths; month++) {
-    currentCapital = currentCapital * (1 + monthlyInterestRate);
+    // FIX: Add monthly rate FIRST to match the vorschüssig formula above
     currentCapital += requiredMonthlyRate;
+    currentCapital = currentCapital * (1 + monthlyInterestRate);
     totalPrincipal += requiredMonthlyRate;
 
     if (month % 12 === 0) {

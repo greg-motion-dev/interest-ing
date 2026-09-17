@@ -1,4 +1,5 @@
 import { useSWRConfig } from "swr";
+import { motion } from "motion/react";
 import { useState } from "react";
 import useCalculatorStore from "@/store/useCalculatorStore";
 import {
@@ -29,11 +30,50 @@ export default function ScenarioCard({ scenario }) {
   const [errorMessage, setErrorMessage] = useState(null);
 
   //load scenario
-  const { loadScenario, activeScenarioId, clearActiveScenario } =
-    useCalculatorStore();
+  const {
+    loadScenario,
+    activeScenarioId,
+    clearActiveScenario,
+    comparisonScenario,
+  } = useCalculatorStore();
 
   // highlight card when currently active
   const isActive = activeScenarioId === _id;
+  const isCompared = comparisonScenario?._id === _id;
+
+  let actionButtonHover =
+    "hover:bg-surface-elevated hover:text-foreground text-text-muted";
+  let borderClass = "border-border-subtle";
+  let bgClass = "bg-surface";
+  let badgeClass =
+    "bg-surface-elevated/60 text-text-muted border-border-subtle/50";
+  let iconColorClass = "text-foreground";
+  let innerBgClass = "bg-surface-elevated/50";
+  let innerTextMuted = "text-text-muted";
+  let innerTextMain = "text-foreground";
+  let textAccentClass = "text-foreground";
+
+  if (isCompared) {
+    actionButtonHover = "hover:bg-secondary/20 text-secondary";
+    badgeClass = "bg-secondary/15 text-secondary border-secondary/30";
+    borderClass = "border-transparent";
+    bgClass = "bg-secondary/10";
+    innerBgClass = "bg-secondary/10";
+    iconColorClass = "text-secondary";
+    innerTextMuted = "text-secondary/70";
+    innerTextMain = "text-secondary";
+    textAccentClass = "text-secondary";
+  } else if (isActive) {
+    actionButtonHover = "hover:bg-primary/20 text-primary";
+    badgeClass = "bg-primary/15 text-primary border-primary/30";
+    borderClass = "border-solid border-primary ring-1 ring-primary";
+    bgClass = "bg-primary/10";
+    innerBgClass = "bg-primary/10";
+    iconColorClass = "text-primary";
+    innerTextMuted = "text-primary/70";
+    innerTextMain = "text-primary";
+    textAccentClass = "text-primary";
+  }
 
   const metrics = [
     { label: "Start Capital", value: startCapital, unit: "€" },
@@ -94,13 +134,32 @@ export default function ScenarioCard({ scenario }) {
   }
 
   return (
-    <div
+    <motion.div
       onClick={() => loadScenario(scenario)}
-      className={`bg-surface border rounded-xl p-5 shadow-sm flex flex-col justify-between space-y-4 cursor-pointer transition-all hover:border-primary ${
-        isActive ? "border-primary ring-1 ring-primary" : "border-border-subtle"
-      }`}
+      whileHover={{ scale: 1.01 }}
+      transition={{ type: "spring", stiffness: 400, damping: 25 }}
+      className={`relative overflow-hidden ${bgClass} border ${borderClass} rounded-2xl p-5 flex flex-col justify-between space-y-4 cursor-pointer`}
     >
-      <div className="flex flex-col space-y-1">
+      {isCompared && (
+        <svg
+          className="absolute inset-0 w-full h-full pointer-events-none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <motion.rect
+            width="100%"
+            height="100%"
+            rx="16"
+            fill="none"
+            strokeWidth="4"
+            strokeDasharray="5 5"
+            initial={{ strokeDashoffset: 16 }}
+            animate={{ strokeDashoffset: 0 }}
+            transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
+            className="stroke-secondary opacity-80"
+          />
+        </svg>
+      )}
+      <div className="relative z-10 flex flex-col space-y-1">
         {isEditing ? (
           <input
             type="text"
@@ -113,13 +172,14 @@ export default function ScenarioCard({ scenario }) {
             className="border-b-2 border-foreground bg-transparent focus:outline-none font-semibold text-foreground text-lg w-full"
           />
         ) : title === "Generating title..." ? (
-          /* 👈 2. Render spinner when AI is working in the background */
           <div className="flex items-center gap-2 text-text-muted">
             <SpinnerIcon className="w-5 h-5 animate-spin text-primary" />
             <span className="font-medium text-sm italic">{title}</span>
           </div>
         ) : (
-          <h3 className="font-semibold text-foreground text-lg tracking-tight">
+          <h3
+            className={`font-semibold ${textAccentClass} text-lg tracking-tight`}
+          >
             {title}
           </h3>
         )}
@@ -131,17 +191,19 @@ export default function ScenarioCard({ scenario }) {
         </span>
       )}
 
-      <div className="grid grid-cols-2 gap-4 text-sm text-text-muted">
+      <div className="grid grid-cols-2 gap-4 text-sm">
         <div className="grid grid-cols-2 gap-2 col-span-2">
           {metrics.map((metric) => (
             <div
               key={metric.label}
-              className="p-2.5 rounded-lg bg-surface-elevated"
+              className={`p-3 rounded-xl ${innerBgClass} border border-border-subtle/40 backdrop-blur-sm`}
             >
-              <span className="block text-text-muted text-xs">
+              <span className={`block ${innerTextMuted} text-xs font-medium`}>
                 {metric.label}
               </span>
-              <span className="font-medium text-foreground">
+              <span
+                className={`font-semibold ${innerTextMain} text-sm mt-0.5 block`}
+              >
                 {metric.value} {metric.unit}
               </span>
             </div>
@@ -149,31 +211,32 @@ export default function ScenarioCard({ scenario }) {
         </div>
 
         <div className="flex items-center justify-between col-span-2 pt-2">
-          <div className="flex items-center gap-1.5 text-xs px-2.5 py-1 bg-surface-elevated text-text-muted rounded-full font-medium">
+          <div
+            className={`flex items-center gap-1.5 text-xs px-3 py-1 rounded-full font-medium ${badgeClass}`}
+          >
             {type === "savings-plan" ? (
-              <PiggyBankIcon className="w-5 h-5 text-secondary" />
+              <PiggyBankIcon className={`w-4 h-4 ${iconColorClass}`} />
             ) : (
-              <PercentIcon className="w-5 h-5 text-primary" />
+              <PercentIcon className={`w-4 h-4 ${iconColorClass}`} />
             )}
             <span className="capitalize">{type.replace("-", " ")}</span>
           </div>
-
           {showConfirm ? (
             <div
-              className="flex items-center gap-1 bg-surface p-1 rounded-lg border border-border-subtle"
+              className="flex items-center gap-1 bg-surface p-1 rounded-xl border border-border-subtle"
               onClick={(e) => e.stopPropagation()}
             >
               <button
                 type="button"
                 onClick={handleDelete}
-                className="text-xs bg-secondary text-white px-2 py-1 rounded hover:opacity-90 transition-opacity font-medium"
+                className="text-xs bg-secondary text-white px-2.5 py-1 rounded-lg hover:opacity-95 font-medium"
               >
                 Delete
               </button>
               <button
                 type="button"
                 onClick={() => setShowConfirm(false)}
-                className="text-xs bg-surface-elevated text-foreground px-2 py-1 rounded hover:opacity-80 transition-opacity font-medium"
+                className="text-xs bg-surface-elevated text-foreground px-2.5 py-1 rounded-lg hover:opacity-85 font-medium"
               >
                 Cancel
               </button>
@@ -181,7 +244,7 @@ export default function ScenarioCard({ scenario }) {
           ) : (
             <div className="flex items-center gap-1">
               <button
-                className="p-2 hover:bg-surface-elevated rounded-lg transition-colors"
+                className={`p-2 rounded-xl transition-colors ${actionButtonHover}`}
                 onClick={(e) => {
                   e.stopPropagation();
                   setNewTitle(title);
@@ -190,10 +253,10 @@ export default function ScenarioCard({ scenario }) {
                 type="button"
                 aria-label="edit"
               >
-                <EditIcon className="w-5 h-5 text-text-muted hover:text-foreground transition-colors" />
+                <EditIcon className="w-5 h-5 transition-colors" />
               </button>
               <button
-                className="p-2 hover:bg-surface-elevated rounded-lg transition-colors"
+                className={`p-2 rounded-xl transition-colors ${actionButtonHover}`}
                 onClick={(e) => {
                   e.stopPropagation();
                   setShowConfirm(true);
@@ -201,12 +264,12 @@ export default function ScenarioCard({ scenario }) {
                 type="button"
                 aria-label="delete"
               >
-                <DeleteIcon className="w-5 h-5 text-text-muted hover:text-foreground transition-colors" />
+                <DeleteIcon className="w-5 h-5 transition-colors" />
               </button>
             </div>
           )}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

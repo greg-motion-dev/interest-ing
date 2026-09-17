@@ -16,33 +16,41 @@ export default function CalculatorLayout() {
           <div className="bg-surface/70 backdrop-blur-xl rounded-3xl p-6 shadow-xl border border-border-subtle">
             {/*  Navigation Bar */}
             <nav className="max-w-7xl mx-auto mb-2 flex justify-center">
-              <div className="flex space-x-2 bg-surface-elevated/50 p-1 rounded-full backdrop-blur-md shadow-sm border border-border-subtle">
+              <div className="flex space-x-2 bg-surface-elevated/50 p-1 rounded-full backdrop-blur-md border border-border-subtle">
                 <button
                   onClick={() => setActiveCalculator("compound-interest")}
-                  className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all border ${
+                  className={`group flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all border ${
                     isCompoundActive
                       ? "bg-primary text-white border-primary shadow-sm"
-                      : "bg-primary/10 text-primary border-primary hover:bg-primary/20"
+                      : "bg-transparent text-text-muted border-transparent hover:bg-primary/10 hover:text-primary hover:border-primary/30"
                   }`}
                   type="button"
                 >
                   <PercentIcon
-                    className={`w-5 h-5 ${isCompoundActive ? "text-white" : "text-primary"}`}
+                    className={`w-5 h-5 transition-colors ${
+                      isCompoundActive
+                        ? "text-white"
+                        : "text-text-muted group-hover:text-primary"
+                    }`}
                   />
                   Compound Interest
                 </button>
 
                 <button
                   onClick={() => setActiveCalculator("savings-plan")}
-                  className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all border ${
+                  className={`group flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all border ${
                     isSavingsActive
                       ? "bg-secondary text-white border-secondary shadow-sm"
-                      : "bg-secondary/10 text-secondary border-secondary hover:bg-secondary/20"
+                      : "bg-transparent text-text-muted border-transparent hover:bg-secondary/10 hover:text-secondary hover:border-secondary/30"
                   }`}
                   type="button"
                 >
                   <PiggyBankIcon
-                    className={`w-5 h-5 ${isSavingsActive ? "text-white" : "text-secondary"}`}
+                    className={`w-5 h-5 transition-colors ${
+                      isSavingsActive
+                        ? "text-white"
+                        : "text-text-muted group-hover:text-secondary"
+                    }`}
                   />
                   Savings Goal
                 </button>

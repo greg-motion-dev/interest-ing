@@ -4,6 +4,7 @@ import MasterInputForm from "./MasterInputForm";
 import Chart from "./Chart";
 import ScenarioList from "./ScenarioList";
 import ScenarioCompareSelect from "./ScenarioCompareSelect";
+import { useEffect } from "react";
 
 export default function PageCompound() {
   const {
@@ -103,6 +104,12 @@ export default function PageCompound() {
     },
   ];
 
+  const compoundSummaryText = `If you invest ${currencyFormatter.format(monthlyRate)} monthly for ${duration} ${duration === 1 ? "year" : "years"} at an interest rate of ${interestRate}%, you will end up with a final capital of ${currencyFormatter.format(result.finalCapital)}. This consists of ${currencyFormatter.format(totalDeposits)} in total deposits and ${currencyFormatter.format(totalInterest)} in interest or capital gains.`;
+
+  useEffect(() => {
+    updateValue("comparisonScenario", null);
+  }, []);
+
   return (
     <div className="w-full flex flex-col lg:flex-row gap-8 p-6">
       <div className="w-full lg:w-1/3 bg-surface border border-border-subtle p-6 rounded-2xl">
@@ -114,16 +121,44 @@ export default function PageCompound() {
           {resultMetrics.map((metric) => (
             <div
               key={metric.id}
-              className="bg-surface border border-border-subtle p-6 rounded-2xl flex flex-col"
+              className="bg-surface border border-border-subtle p-6 rounded-2xl flex flex-col justify-between"
             >
-              <p className="text-text-muted text-sm mb-1">{metric.label}</p>
+              <p className="text-text-muted text-xs font-medium mb-1">
+                {metric.label}
+              </p>
               <p
-                className={`text-2xl lg:text-3xl font-bold ${metric.valueColor}`}
+                className={`text-xl lg:text-2xl font-bold tracking-tight ${metric.valueColor}`}
               >
                 {metric.value}
               </p>
             </div>
           ))}
+        </div>
+        <div className="bg-surface border border-border-subtle p-6 rounded-2xl text-sm text-text-muted leading-relaxed">
+          <p>
+            If you invest{" "}
+            <strong className="text-foreground font-semibold">
+              {currencyFormatter.format(monthlyRate)}
+            </strong>{" "}
+            monthly for {duration} {duration === 1 ? "year" : "years"} at an
+            interest rate of{" "}
+            <strong className="text-foreground font-semibold">
+              {interestRate}%
+            </strong>
+            , you will end up with a final capital of{" "}
+            <strong className="text-primary font-bold">
+              {currencyFormatter.format(result.finalCapital)}
+            </strong>
+            . This consists of{" "}
+            <strong className="text-foreground font-semibold">
+              {currencyFormatter.format(totalDeposits)}
+            </strong>{" "}
+            in total deposits and{" "}
+            <strong className="text-gain font-bold">
+              + {currencyFormatter.format(totalInterest)}
+            </strong>{" "}
+            in interest or capital gains.
+          </p>
         </div>
         <ScenarioCompareSelect />
         <div className="bg-surface border border-border-subtle p-6 rounded-2xl h-[400px]">
