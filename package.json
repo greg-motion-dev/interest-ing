@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@ai-sdk/google": "^4.0.72",
-    "@ai-sdk/openai": "^4.0.66",
     "ai": "^7.0.101",
     "mongoose": "^9.9.4",
     "motion": "^13.2.0",

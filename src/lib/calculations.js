@@ -4,14 +4,13 @@ export default function calculateCompoundInterest(
   duration,
   interestRate,
 ) {
-  //prevent NaN by turning incoming values to numbers
   startCapital = Number(startCapital) || 0;
   monthlyRate = Number(monthlyRate) || 0;
   duration = Number(duration) || 0;
   interestRate = Number(interestRate) || 0;
 
   let currentCapital = startCapital;
-  let totalPrincipal = startCapital; // reines Einzahlungskapital
+  let totalPrincipal = startCapital;
   let yearlyData = [
     {
       year: 0,
@@ -20,21 +19,17 @@ export default function calculateCompoundInterest(
     },
   ];
 
-  // monthly interest rate of the annual interest rate
   const monthlyInterestRate = interestRate / 100 / 12;
-
   const durationInMonths = duration * 12;
 
-  //loop through every month to add compound interest
   for (let month = 1; month <= durationInMonths; month++) {
-    currentCapital = currentCapital * (1 + monthlyInterestRate);
     currentCapital += monthlyRate;
+    currentCapital = currentCapital * (1 + monthlyInterestRate);
     totalPrincipal += monthlyRate;
 
     if (month % 12 === 0) {
       const year = month / 12;
 
-      //pure interest gathered in a year
       const totalInterest = currentCapital - totalPrincipal;
       yearlyData.push({ year, totalPrincipal, totalInterest });
     }
@@ -51,13 +46,11 @@ export function calculateSavingsPlan(
   duration,
   interestRate,
 ) {
-  //prevent NaN by turning incoming values to numbers
   targetAmount = Number(targetAmount) || 0;
   startCapital = Number(startCapital) || 0;
   duration = Number(duration) || 0;
   interestRate = Number(interestRate) || 0;
 
-  // prevent division by zero in the formulas below
   if (duration <= 0) {
     return {
       requiredMonthlyRate: 0,
@@ -77,27 +70,24 @@ export function calculateSavingsPlan(
 
   let requiredMonthlyRate = 0;
 
-  // Handle 0% interest edge case to avoid division by zero
   if (monthlyInterestRate === 0) {
     requiredMonthlyRate = (targetAmount - startCapital) / durationInMonths;
   } else {
     const compoundFactor = Math.pow(1 + monthlyInterestRate, durationInMonths);
     const futureValueOfStartCapital = startCapital * compoundFactor;
 
-    // If startCcapital alone already exceeds the target due to interest, no monthly rate is needed
     if (futureValueOfStartCapital >= targetAmount) {
       requiredMonthlyRate = 0;
     } else {
       requiredMonthlyRate =
         (targetAmount - futureValueOfStartCapital) *
-        (monthlyInterestRate / (compoundFactor - 1));
+        (monthlyInterestRate /
+          ((compoundFactor - 1) * (1 + monthlyInterestRate)));
     }
   }
 
-  // How to prrevent negative savings rates
   requiredMonthlyRate = Math.max(0, requiredMonthlyRate);
 
-  // Generate the chart data matching the exact structure of the compound calculator
   let currentCapital = startCapital;
   let totalPrincipal = startCapital;
   const yearlyData = [
@@ -109,8 +99,8 @@ export function calculateSavingsPlan(
   ];
 
   for (let month = 1; month <= durationInMonths; month++) {
-    currentCapital = currentCapital * (1 + monthlyInterestRate);
     currentCapital += requiredMonthlyRate;
+    currentCapital = currentCapital * (1 + monthlyInterestRate);
     totalPrincipal += requiredMonthlyRate;
 
     if (month % 12 === 0) {
@@ -122,7 +112,7 @@ export function calculateSavingsPlan(
 
   return {
     requiredMonthlyRate,
-    finalCapital: currentCapital, // Will match targetAmount
+    finalCapital: currentCapital,
     yearlyData,
   };
 }
