@@ -60,7 +60,7 @@ export default function ExpandableRateCard({
   const roundedRate = Math.round(monthlyRate || 0);
 
   return (
-    <div className="bg-surface border border-border-subtle p-4 sm:p-6 rounded-2xl flex flex-col relative overflow-hidden transition-colors hover:border-border">
+    <div className="bg-surface border border-border-subtle p-4 sm:p-6 rounded-2xl flex flex-col relative overflow-hidden transition-colors hover:border">
       <div className="flex justify-between items-end z-10">
         <div>
           <p className="text-text-muted text-xs font-medium mb-1">{label}</p>
