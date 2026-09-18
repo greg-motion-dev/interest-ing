@@ -104,15 +104,13 @@ export default function PageCompound() {
     },
   ];
 
-  const compoundSummaryText = `If you invest ${currencyFormatter.format(monthlyRate)} monthly for ${duration} ${duration === 1 ? "year" : "years"} at an interest rate of ${interestRate}%, you will end up with a final capital of ${currencyFormatter.format(result.finalCapital)}. This consists of ${currencyFormatter.format(totalDeposits)} in total deposits and ${currencyFormatter.format(totalInterest)} in interest or capital gains.`;
-
   useEffect(() => {
     updateValue("comparisonScenario", null);
   }, []);
 
   return (
-    <div className="w-full flex flex-col lg:flex-row gap-8 p-6">
-      <div className="w-full lg:w-1/3 bg-surface border border-border-subtle p-6 rounded-2xl">
+    <div className="w-full flex flex-col lg:flex-row gap-4 sm:gap-8 pt-4 sm:pt-6">
+      <div className="w-full lg:w-1/3 bg-surface border border-border-subtle p-4 sm:p-6 rounded-2xl">
         <MasterInputForm sliders={compoundSliders} type="compound-interest" />
       </div>
 
@@ -134,7 +132,7 @@ export default function PageCompound() {
             </div>
           ))}
         </div>
-        <div className="bg-surface border border-border-subtle p-6 rounded-2xl text-sm text-text-muted leading-relaxed">
+        <div className="bg-surface border border-border-subtle p-4 sm:p-6 rounded-2xl text-sm text-text-muted leading-relaxed">
           <p>
             If you invest{" "}
             <strong className="text-foreground font-semibold">
@@ -161,7 +159,7 @@ export default function PageCompound() {
           </p>
         </div>
         <ScenarioCompareSelect />
-        <div className="bg-surface border border-border-subtle p-6 rounded-2xl h-[400px]">
+        <div className="bg-surface border border-border-subtle p-4 sm:p-6 rounded-2xl h-[400px]">
           <Chart data={result.yearlyData} comparisonData={comparisonData} />
         </div>
         <ScenarioList />

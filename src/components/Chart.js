@@ -144,7 +144,27 @@ export default function Chart({ data, comparisonData }) {
   }, [data, comparisonData]);
 
   return (
-    <div className="w-full h-96">
+    <div className="w-full h-96 relative flex flex-col">
+      <div className="flex items-center justify-center gap-6 mb-4 text-xs font-medium text-text-muted">
+        <div className="flex items-center gap-2">
+          <span className="w-4 h-0.5 bg-foreground rounded-full opacity-60"></span>
+          <span>Deposits (Solid)</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <svg width="16" height="4" className="overflow-visible opacity-60">
+            <line
+              x1="0"
+              y1="2"
+              x2="16"
+              y2="2"
+              stroke="var(--color-foreground)"
+              strokeWidth="2"
+              strokeDasharray="4 4"
+            />
+          </svg>
+          <span>Interest (Dashed)</span>
+        </div>
+      </div>
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           data={mergedData}

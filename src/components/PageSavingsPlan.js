@@ -83,19 +83,18 @@ export default function PageSavingsPlan() {
       unit: "%",
     },
   ];
-  const savingsSummaryText = `To reach your target of ${currencyFormatter.format(targetAmount)} over ${duration} ${duration === 1 ? "year" : "years"} at an interest rate of ${interestRate}%, you need a required monthly rate of ${currencyFormatter.format(result.requiredMonthlyRate)}. This consists of ${currencyFormatter.format(totalDeposits)} in total deposits and ${currencyFormatter.format(totalInterest)} in interest or capital gains.`;
 
   useEffect(() => {
     updateValue("comparisonScenario", null);
   }, []);
 
   return (
-    <div className="w-full flex flex-col lg:flex-row gap-8 p-6">
-      <div className="w-full lg:w-1/3 bg-surface border border-border-subtle p-6 rounded-2xl">
+    <div className="w-full flex flex-col lg:flex-row gap-4 sm:gap-8 pt-4 sm:pt-6">
+      <div className="w-full lg:w-1/3 bg-surface border border-border-subtle p-4 sm:p-6 rounded-2xl">
         <MasterInputForm sliders={savingsSliders} type="savings-plan" />
       </div>
 
-      <div className="w-full lg:w-2/3 flex flex-col gap-6">
+      <div className="w-full lg:w-2/3 flex flex-col gap-4 sm:gap-6">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <ExpandableRateCard
             label="Required Monthly Rate"
@@ -108,7 +107,7 @@ export default function PageSavingsPlan() {
             totalInterest={totalInterest}
           />
 
-          <div className="bg-surface border border-border-subtle p-6 rounded-2xl flex flex-col justify-between">
+          <div className="bg-surface border border-border-subtle p-4 sm:p-6 rounded-2xl flex flex-col justify-between">
             <p className="text-text-muted text-xs font-medium mb-1">
               Total Deposits
             </p>
@@ -117,7 +116,7 @@ export default function PageSavingsPlan() {
             </p>
           </div>
 
-          <div className="bg-surface border border-border-subtle p-6 rounded-2xl flex flex-col justify-between">
+          <div className="bg-surface border border-border-subtle p-4 sm:p-6 rounded-2xl flex flex-col justify-between">
             <p className="text-text-muted text-xs font-medium mb-1">
               Interest Received
             </p>
@@ -126,7 +125,7 @@ export default function PageSavingsPlan() {
             </p>
           </div>
         </div>
-        <div className="bg-surface border border-border-subtle p-6 rounded-2xl text-sm text-text-muted leading-relaxed">
+        <div className="bg-surface border border-border-subtle p-4 sm:p-6 rounded-2xl text-sm text-text-muted leading-relaxed">
           <p>
             To reach your target of{" "}
             <strong className="text-foreground font-semibold">
@@ -154,7 +153,7 @@ export default function PageSavingsPlan() {
         </div>
         <ScenarioCompareSelect />
 
-        <div className="bg-surface border border-border-subtle p-6 rounded-2xl h-[400px]">
+        <div className="bg-surface border border-border-subtle p-4 sm:p-6 rounded-2xl h-[400px]">
           <Chart data={result.yearlyData} comparisonData={comparisonData} />
         </div>
 

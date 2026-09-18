@@ -160,3 +160,23 @@ export function SpinnerIcon({ className = "w-5 h-5" }) {
     </svg>
   );
 }
+
+export function UpdateIcon({ className = "w-5 h-5" }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <path d="M4 12a8 8 0 0 1 14.93-4" />
+      <path d="M20 12a8 8 0 0 1-14.93 4" />
+      <polyline points="14 8 19 8 19 3" />
+      <polyline points="10 16 5 16 5 21" />
+    </svg>
+  );
+}

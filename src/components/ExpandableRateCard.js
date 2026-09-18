@@ -60,7 +60,7 @@ export default function ExpandableRateCard({
   const roundedRate = Math.round(monthlyRate || 0);
 
   return (
-    <div className="bg-surface border border-border-subtle p-6 rounded-2xl flex flex-col relative overflow-hidden transition-colors hover:border-border">
+    <div className="bg-surface border border-border-subtle p-4 sm:p-6 rounded-2xl flex flex-col relative overflow-hidden transition-colors hover:border-border">
       <div className="flex justify-between items-end z-10">
         <div>
           <p className="text-text-muted text-xs font-medium mb-1">{label}</p>
@@ -113,7 +113,7 @@ export default function ExpandableRateCard({
 
               {insight && (
                 <>
-                  <div className="inline-block bg-surface-elevated border border-border-subtle px-2.5 py-1 text-xs font-medium w-fit rounded-none">
+                  <div className="w-full bg-primary/10 border border-primary/30 px-4 py-2.5 text-xs font-semibold text-primary flex items-center justify-center rounded-xl text-center">
                     That's ~{Math.round(insight.weeklyTarget)} € per week
                   </div>
 

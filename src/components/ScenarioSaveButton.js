@@ -1,5 +1,5 @@
 import useCalculatorStore from "@/store/useCalculatorStore";
-import { SaveIcon } from "@/assets/Icons";
+import { SaveIcon, UpdateIcon } from "@/assets/Icons";
 import { mutate } from "swr";
 import { useState } from "react";
 
@@ -131,7 +131,7 @@ export default function ScenarioSaveButton({ type = "compound-interest" }) {
             onClick={handleUpdateCurrent}
             className="flex items-center justify-center gap-2 bg-primary text-white px-4 py-2 rounded-lg hover:opacity-90 transition-opacity w-fit"
           >
-            <SaveIcon className="w-5 h-5" />
+            <UpdateIcon className="w-5 h-5" />
             <span className="font-medium text-sm">Update Current</span>
           </button>
 
