@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { CalculatorType, SavedScenario } from "@/types/calculator";
+import type { CalculatorType, SavedScenario } from "@/types/calculator";
 
 interface CalculatorState {
   // Core common denominators
