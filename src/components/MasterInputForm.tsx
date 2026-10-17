@@ -1,7 +1,16 @@
 import RangeSlider from "./RangeSlider";
 import ScenarioSaveButton from "./ScenarioSaveButton";
+import { SliderConfig, CalculatorType } from "@/types/calculator";
 
-export default function MasterInputForm({ sliders, type }) {
+interface MasterInputFormProps {
+  sliders: SliderConfig[];
+  type: CalculatorType;
+}
+
+export default function MasterInputForm({
+  sliders,
+  type,
+}: MasterInputFormProps) {
   return (
     <div className="flex flex-col space-y-6">
       {sliders.map((slider) => (

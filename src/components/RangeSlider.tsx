@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, ChangeEvent } from "react";
+import { SliderConfig } from "@/types/calculator";
 
 export default function RangeSlider({
   label,
@@ -10,17 +11,17 @@ export default function RangeSlider({
   step = 1,
   unit = "",
   value,
-}) {
-  const [inputValue, setInputValue] = useState(value);
-  const [isFocused, setIsFocused] = useState(false);
-  const [prevPropValue, setPrevPropValue] = useState(value);
+}: SliderConfig) {
+  const [inputValue, setInputValue] = useState<number | string>(value);
+  const [isFocused, setIsFocused] = useState<boolean>(false);
+  const [prevPropValue, setPrevPropValue] = useState<number>(value);
 
   if (value !== prevPropValue) {
     setPrevPropValue(value);
     setInputValue(value);
   }
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     setInputValue(val);
 
@@ -46,6 +47,7 @@ export default function RangeSlider({
   };
 
   const paddingClass = isFocused ? "pr-3" : unit.length > 1 ? "pr-12" : "pr-7";
+
   return (
     <div className="flex flex-col space-y-2">
       <div className="flex justify-between items-center">
@@ -79,7 +81,9 @@ export default function RangeSlider({
         max={max}
         step={step}
         value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
+        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+          onChange(Number(e.target.value))
+        }
       />
     </div>
   );

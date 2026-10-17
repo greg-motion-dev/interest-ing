@@ -1,4 +1,10 @@
-export function EditIcon({ className = "w-5 h-5" }) {
+import React from "react";
+
+interface IconProps {
+  className?: string;
+}
+
+export function EditIcon({ className = "w-5 h-5" }: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -27,7 +33,7 @@ export function EditIcon({ className = "w-5 h-5" }) {
   );
 }
 
-export function DeleteIcon({ className = "w-5 h-5" }) {
+export function DeleteIcon({ className = "w-5 h-5" }: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -74,7 +80,7 @@ export function DeleteIcon({ className = "w-5 h-5" }) {
   );
 }
 
-export function SaveIcon({ className = "w-5 h-5" }) {
+export function SaveIcon({ className = "w-5 h-5" }: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -90,7 +96,7 @@ export function SaveIcon({ className = "w-5 h-5" }) {
   );
 }
 
-export function PiggyBankIcon({ className = "w-5 h-5" }) {
+export function PiggyBankIcon({ className = "w-5 h-5" }: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -112,7 +118,7 @@ export function PiggyBankIcon({ className = "w-5 h-5" }) {
   );
 }
 
-export function PercentIcon({ className = "w-5 h-5" }) {
+export function PercentIcon({ className = "w-5 h-5" }: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -136,7 +142,7 @@ export function PercentIcon({ className = "w-5 h-5" }) {
   );
 }
 
-export function SpinnerIcon({ className = "w-5 h-5" }) {
+export function SpinnerIcon({ className = "w-5 h-5" }: IconProps) {
   return (
     <svg
       className={`animate-spin text-current ${className}`}
@@ -161,7 +167,7 @@ export function SpinnerIcon({ className = "w-5 h-5" }) {
   );
 }
 
-export function UpdateIcon({ className = "w-5 h-5" }) {
+export function UpdateIcon({ className = "w-5 h-5" }: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

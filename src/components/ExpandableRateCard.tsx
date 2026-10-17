@@ -2,6 +2,28 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { PiggyBankIcon } from "@/assets/Icons";
 
+interface HackItem {
+  icon: string;
+  title: string;
+  description: string;
+}
+
+interface ActionPlanInsight {
+  weeklyTarget: number;
+  hacks: HackItem[];
+}
+
+interface ExpandableRateCardProps {
+  label: string;
+  value: string;
+  valueColor: string;
+  valueSize?: string;
+  finalAmount: number;
+  duration: number;
+  monthlyRate: number;
+  totalInterest: number;
+}
+
 export default function ExpandableRateCard({
   label,
   value,
@@ -11,11 +33,11 @@ export default function ExpandableRateCard({
   duration,
   monthlyRate,
   totalInterest,
-}) {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [insight, setInsight] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
+}: ExpandableRateCardProps) {
+  const [isExpanded, setIsExpanded] = useState<boolean>(false);
+  const [insight, setInsight] = useState<ActionPlanInsight | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
 
   useEffect(() => {
     setIsExpanded(false);
@@ -44,7 +66,7 @@ export default function ExpandableRateCard({
 
         if (!response.ok) throw new Error("Failed to fetch AI insights");
 
-        const data = await response.json();
+        const data: ActionPlanInsight = await response.json();
         setInsight(data);
       } catch (error) {
         console.error(error);
@@ -114,7 +136,7 @@ export default function ExpandableRateCard({
               {insight && (
                 <>
                   <div className="w-full bg-primary/10 border border-primary/30 px-4 py-2.5 text-xs font-semibold text-primary flex items-center justify-center rounded-xl text-center">
-                    That's ~{Math.round(insight.weeklyTarget)} € per week
+                    That&apos;s ~{Math.round(insight.weeklyTarget)} € per week
                   </div>
 
                   <div className="flex flex-col gap-3">
