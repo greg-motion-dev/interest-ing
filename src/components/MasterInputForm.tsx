@@ -1,6 +1,6 @@
 import RangeSlider from "./RangeSlider";
 import ScenarioSaveButton from "./ScenarioSaveButton";
-import { SliderConfig, CalculatorType } from "@/types/calculator";
+import type { SliderConfig, CalculatorType } from "@/types/calculator";
 
 interface MasterInputFormProps {
   sliders: SliderConfig[];

@@ -1,5 +1,6 @@
-import { useState, ChangeEvent } from "react";
-import { SliderConfig } from "@/types/calculator";
+import { useState } from "react";
+import type { ChangeEvent } from "react";
+import type { SliderConfig } from "@/types/calculator";
 
 export default function RangeSlider({
   label,
