@@ -138,15 +138,15 @@ export default function Chart({ data, comparisonData }: ChartProps) {
     const merged: YearlyDataPoint[] = [];
 
     for (let i = 0; i < maxYears; i++) {
-      const activeYear = data[i] || {};
-      const compYear = comparisonData[i] || {};
+      const activeYear = data[i];
+      const compYear = comparisonData[i];
 
       merged.push({
         year: i,
-        totalPrincipal: activeYear.totalPrincipal || 0,
-        totalInterest: activeYear.totalInterest || 0,
-        compTotalPrincipal: compYear.totalPrincipal,
-        compTotalInterest: compYear.totalInterest,
+        totalPrincipal: activeYear?.totalPrincipal ?? 0,
+        totalInterest: activeYear?.totalInterest ?? 0,
+        compTotalPrincipal: compYear?.totalPrincipal,
+        compTotalInterest: compYear?.totalInterest,
       });
     }
 
