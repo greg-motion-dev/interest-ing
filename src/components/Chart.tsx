@@ -141,18 +141,26 @@ export default function Chart({ data, comparisonData }: ChartProps) {
       const activeYear = data[i];
       const compYear = comparisonData[i];
 
-      merged.push({
+      // 1. Construct the base required properties
+      const dataPoint: YearlyDataPoint = {
         year: i,
         totalPrincipal: activeYear?.totalPrincipal ?? 0,
         totalInterest: activeYear?.totalInterest ?? 0,
-        compTotalPrincipal: compYear?.totalPrincipal,
-        compTotalInterest: compYear?.totalInterest,
-      });
+      };
+
+      // 2. Conditionally append comparison data only if it exists
+      if (compYear?.totalPrincipal !== undefined) {
+        dataPoint.compTotalPrincipal = compYear.totalPrincipal;
+      }
+      if (compYear?.totalInterest !== undefined) {
+        dataPoint.compTotalInterest = compYear.totalInterest;
+      }
+
+      merged.push(dataPoint);
     }
 
     return merged;
   }, [data, comparisonData]);
-
   return (
     <div className="w-full h-96 relative flex flex-col">
       <div className="flex items-center justify-center gap-6 mb-4 text-xs font-medium text-text-muted">
