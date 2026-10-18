@@ -1,18 +1,22 @@
 import useSWR from "swr";
 import ScenarioCard from "./ScenarioCard";
 import useCalculatorStore from "@/store/useCalculatorStore";
+import type { SavedScenario } from "@/types/calculator";
 
-const fetcher = (url) => fetch(url).then((response) => response.json());
+const fetcher = (url: string) => fetch(url).then((response) => response.json());
 
 export default function ScenarioList() {
   const { activeCalculator } = useCalculatorStore();
-  const { data, isLoading } = useSWR("/api/scenarios", fetcher);
+  const { data, isLoading } = useSWR<SavedScenario[]>(
+    "/api/scenarios",
+    fetcher,
+  );
 
   if (isLoading) {
     return <p className="text-text-muted text-sm animate-pulse">Loading...</p>;
   }
   if (!data) {
-    return;
+    return null;
   }
 
   const scenarios = data.filter(

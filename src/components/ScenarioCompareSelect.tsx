@@ -1,8 +1,9 @@
 import useSWR from "swr";
 import useCalculatorStore from "@/store/useCalculatorStore";
 import { useState, useEffect, useRef } from "react";
+import type { SavedScenario } from "@/types/calculator";
 
-const fetcher = (url) => fetch(url).then((response) => response.json());
+const fetcher = (url: string) => fetch(url).then((response) => response.json());
 
 export default function ScenarioCompareSelect() {
   const {
@@ -13,18 +14,21 @@ export default function ScenarioCompareSelect() {
     clearComparisonScenario,
   } = useCalculatorStore();
 
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef(null);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   const {
     data: scenarios,
     error,
     isLoading,
-  } = useSWR("/api/scenarios", fetcher);
+  } = useSWR<SavedScenario[]>("/api/scenarios", fetcher);
 
   useEffect(() => {
-    function handleClickOutside(event) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     }
@@ -46,7 +50,6 @@ export default function ScenarioCompareSelect() {
 
   if (!scenarios || scenarios.length === 0) return null;
 
-  //only display scenarios of same type
   const availableScenarios = scenarios.filter(
     (scenario) =>
       scenario.type === activeCalculator && scenario._id !== activeScenarioId,
@@ -60,7 +63,6 @@ export default function ScenarioCompareSelect() {
         Compare your current selection with a saved scenario:
       </label>
 
-      {/* Custom Select Trigger Button */}
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
@@ -90,10 +92,8 @@ export default function ScenarioCompareSelect() {
         </svg>
       </button>
 
-      {/* Custom Dropdown Menu Options */}
       {isOpen && (
         <div className="absolute left-0 right-0 top-full mt-2 z-50 bg-surface border border-border-subtle rounded-2xl shadow-xl overflow-hidden backdrop-blur-xl">
-          {/* Clear Option */}
           <button
             type="button"
             onClick={() => {
