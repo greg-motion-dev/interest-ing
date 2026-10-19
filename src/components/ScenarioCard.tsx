@@ -1,7 +1,9 @@
 import { useSWRConfig } from "swr";
 import { motion } from "motion/react";
 import { useState } from "react";
+import type { KeyboardEvent, MouseEvent } from "react";
 import useCalculatorStore from "@/store/useCalculatorStore";
+import type { SavedScenario } from "@/types/calculator";
 import {
   EditIcon,
   DeleteIcon,
@@ -10,7 +12,11 @@ import {
   SpinnerIcon,
 } from "@/assets/Icons";
 
-export default function ScenarioCard({ scenario }) {
+interface ScenarioCardProps {
+  scenario: SavedScenario;
+}
+
+export default function ScenarioCard({ scenario }: ScenarioCardProps) {
   const {
     _id,
     title,
@@ -24,12 +30,11 @@ export default function ScenarioCard({ scenario }) {
 
   const { mutate } = useSWRConfig();
 
-  const [isEditing, setIsEditing] = useState(false);
-  const [newTitle, setNewTitle] = useState(title);
-  const [showConfirm, setShowConfirm] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [newTitle, setNewTitle] = useState<string>(title);
+  const [showConfirm, setShowConfirm] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  //load scenario
   const {
     loadScenario,
     activeScenarioId,
@@ -37,7 +42,6 @@ export default function ScenarioCard({ scenario }) {
     comparisonScenario,
   } = useCalculatorStore();
 
-  // highlight card when currently active
   const isActive = activeScenarioId === _id;
   const isCompared = comparisonScenario?._id === _id;
 
@@ -99,7 +103,7 @@ export default function ScenarioCard({ scenario }) {
         setErrorMessage("Delete failed!");
         setShowConfirm(false);
       }
-    } catch (error) {
+    } catch {
       setErrorMessage("Network error!");
       setShowConfirm(false);
     }
@@ -127,7 +131,7 @@ export default function ScenarioCard({ scenario }) {
         setErrorMessage("Update failed.");
         setNewTitle(title);
       }
-    } catch (error) {
+    } catch {
       setErrorMessage("Network Error");
       setNewTitle(title);
     }
@@ -166,8 +170,10 @@ export default function ScenarioCard({ scenario }) {
             value={newTitle}
             onChange={(e) => setNewTitle(e.target.value)}
             onBlur={handleUpdateTitle}
-            onKeyDown={(e) => e.key === "Enter" && handleUpdateTitle()}
-            onClick={(e) => e.stopPropagation()}
+            onKeyDown={(e: KeyboardEvent<HTMLInputElement>) =>
+              e.key === "Enter" && handleUpdateTitle()
+            }
+            onClick={(e: MouseEvent<HTMLInputElement>) => e.stopPropagation()}
             autoFocus
             className="border-b-2 border-foreground bg-transparent focus:outline-none font-semibold text-foreground text-lg w-full"
           />
@@ -224,7 +230,7 @@ export default function ScenarioCard({ scenario }) {
           {showConfirm ? (
             <div
               className="flex items-center gap-1 bg-surface p-1 rounded-xl border border-border-subtle"
-              onClick={(e) => e.stopPropagation()}
+              onClick={(e: MouseEvent<HTMLDivElement>) => e.stopPropagation()}
             >
               <button
                 type="button"
@@ -245,7 +251,7 @@ export default function ScenarioCard({ scenario }) {
             <div className="flex items-center gap-1">
               <button
                 className={`p-2 rounded-xl transition-colors ${actionButtonHover}`}
-                onClick={(e) => {
+                onClick={(e: MouseEvent<HTMLButtonElement>) => {
                   e.stopPropagation();
                   setNewTitle(title);
                   setIsEditing(true);
@@ -257,7 +263,7 @@ export default function ScenarioCard({ scenario }) {
               </button>
               <button
                 className={`p-2 rounded-xl transition-colors ${actionButtonHover}`}
-                onClick={(e) => {
+                onClick={(e: MouseEvent<HTMLButtonElement>) => {
                   e.stopPropagation();
                   setShowConfirm(true);
                 }}

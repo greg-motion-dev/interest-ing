@@ -8,14 +8,30 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { useMemo } from "react";
+import type { YearlyDataPoint } from "@/types/calculator";
 
-const CustomTooltip = ({ active, payload, label }) => {
+interface ChartProps {
+  data: YearlyDataPoint[];
+  comparisonData: YearlyDataPoint[] | null;
+}
+
+interface CustomTooltipProps {
+  active?: boolean;
+  payload?: Array<{
+    payload: YearlyDataPoint;
+  }>;
+  label?: number | string;
+}
+
+const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
   if (active && payload && payload.length) {
     const currencyFormatter = new Intl.NumberFormat("de-DE", {
       style: "currency",
       currency: "EUR",
       maximumFractionDigits: 0,
     });
+
+    const dataPoint = payload[0]?.payload;
 
     return (
       <div className="bg-surface-elevated border border-border-subtle p-4 rounded-xl shadow-xl backdrop-blur-md min-w-[220px]">
@@ -46,7 +62,7 @@ const CustomTooltip = ({ active, payload, label }) => {
               </span>
             </span>
             <span className="font-medium text-foreground">
-              {currencyFormatter.format(payload[0]?.payload.totalInterest || 0)}
+              {currencyFormatter.format(dataPoint?.totalInterest || 0)}
             </span>
           </div>
 
@@ -59,14 +75,12 @@ const CustomTooltip = ({ active, payload, label }) => {
               </span>
             </span>
             <span className="font-medium text-foreground">
-              {currencyFormatter.format(
-                payload[0]?.payload.totalPrincipal || 0,
-              )}
+              {currencyFormatter.format(dataPoint?.totalPrincipal || 0)}
             </span>
           </div>
         </div>
 
-        {payload[0]?.payload.compTotalPrincipal !== undefined && (
+        {dataPoint?.compTotalPrincipal !== undefined && (
           <div className="flex flex-col gap-2 pt-1">
             <p className="text-xs text-foreground font-bold uppercase tracking-wider mb-1 mt-1 flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-secondary"></span>
@@ -92,9 +106,7 @@ const CustomTooltip = ({ active, payload, label }) => {
                 </span>
               </span>
               <span className="font-medium text-foreground">
-                {currencyFormatter.format(
-                  payload[0]?.payload.compTotalInterest || 0,
-                )}
+                {currencyFormatter.format(dataPoint?.compTotalInterest || 0)}
               </span>
             </div>
 
@@ -107,9 +119,7 @@ const CustomTooltip = ({ active, payload, label }) => {
                 </span>
               </span>
               <span className="font-medium text-foreground">
-                {currencyFormatter.format(
-                  payload[0]?.payload.compTotalPrincipal || 0,
-                )}
+                {currencyFormatter.format(dataPoint?.compTotalPrincipal || 0)}
               </span>
             </div>
           </div>
@@ -120,29 +130,37 @@ const CustomTooltip = ({ active, payload, label }) => {
   return null;
 };
 
-export default function Chart({ data, comparisonData }) {
+export default function Chart({ data, comparisonData }: ChartProps) {
   const mergedData = useMemo(() => {
     if (!comparisonData || comparisonData.length === 0) return data;
 
     const maxYears = Math.max(data.length, comparisonData.length);
-    const merged = [];
+    const merged: YearlyDataPoint[] = [];
 
     for (let i = 0; i < maxYears; i++) {
-      const activeYear = data[i] || {};
-      const compYear = comparisonData[i] || {};
+      const activeYear = data[i];
+      const compYear = comparisonData[i];
 
-      merged.push({
+      // 1. Construct the base required properties
+      const dataPoint: YearlyDataPoint = {
         year: i,
-        totalPrincipal: activeYear.totalPrincipal,
-        totalInterest: activeYear.totalInterest,
-        compTotalPrincipal: compYear.totalPrincipal,
-        compTotalInterest: compYear.totalInterest,
-      });
+        totalPrincipal: activeYear?.totalPrincipal ?? 0,
+        totalInterest: activeYear?.totalInterest ?? 0,
+      };
+
+      // 2. Conditionally append comparison data only if it exists
+      if (compYear?.totalPrincipal !== undefined) {
+        dataPoint.compTotalPrincipal = compYear.totalPrincipal;
+      }
+      if (compYear?.totalInterest !== undefined) {
+        dataPoint.compTotalInterest = compYear.totalInterest;
+      }
+
+      merged.push(dataPoint);
     }
 
     return merged;
   }, [data, comparisonData]);
-
   return (
     <div className="w-full h-96 relative flex flex-col">
       <div className="flex items-center justify-center gap-6 mb-4 text-xs font-medium text-text-muted">
